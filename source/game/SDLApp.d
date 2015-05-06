@@ -54,18 +54,18 @@ public class SDLApp
 
     public this ( string name, int width, int height, IGame game )
     {
-        this.win = SDL.createWindow(name, width, height);
+        this.win = SDL.Window.createWindow(name, width, height);
         if ( this.win() is null )
         {
             logSDLError("Error creating window");
             assert(false);
         }
 
-        this.surface = SDL.getWindowSurface(this.win);
+        this.surface = SDL.Surface.getWindowSurface(this.win);
         if ( this.surface() is null )
         {
             logSDLError("Error getting window surface");
-            SDL.destroyWindow(this.win);
+            SDL.Window.destroyWindow(this.win);
             assert(false);
         }
 
@@ -80,7 +80,7 @@ public class SDLApp
 
     ~this ( )
     {
-        SDL.destroyWindow(this.win);
+        SDL.Window.destroyWindow(this.win);
     }
 
     /**
@@ -125,19 +125,19 @@ public class SDLApp
     {
         this.running = true;
 
-        auto event = SDL.createEvent();
+        auto event = SDL.Event.createEvent();
 
         try while ( this.running )
         {
-            while( SDL.pollEvent(event) )
+            while( SDL.Event.pollEvent(event) )
             {
-                if ( event().type == SDL.QUIT )
+                if ( event().type == SDL.Event.QUIT )
                 {
                     this.running = false;
                 }
             }
 
-            SDL.updateWindow(win);
+            SDL.Window.updateWindow(win);
         }
         catch ( Exception e )
         {
