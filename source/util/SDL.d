@@ -141,6 +141,18 @@ public struct SDL
 
             return result;
         }
+
+        /**
+         * Free the given surface
+         *
+         * Params:
+         *      surface = The surface to free
+         */
+
+        public static void freeSurface ( Surface surface )
+        {
+            SDL_FreeSurface(surface());
+        }
     }
 
     /**

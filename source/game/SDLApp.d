@@ -80,6 +80,7 @@ public class SDLApp
 
     ~this ( )
     {
+        SDL.Surface.freeSurface(this.surface);
         SDL.Window.destroyWindow(this.win);
     }
 
