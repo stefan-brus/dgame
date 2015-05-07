@@ -8,6 +8,8 @@ module game.DGame;
 
 import game.model.IGame;
 
+import util.GL;
+
 /**
  * DGame class
  */
@@ -20,7 +22,14 @@ public class DGame : IGame
 
     public void render ( )
     {
-
+        GL.clear(GL.COLOR_BUFFER_BIT);
+        GL.begin(GL.QUADS);
+        GL.vertex2f(200, 100);
+        GL.vertex2f(400, 100);
+        GL.vertex2f(400, 300);
+        GL.vertex2f(200, 300);
+        GL.end();
+        GL.flush();
     }
 
     /**

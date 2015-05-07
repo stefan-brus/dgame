@@ -6,6 +6,7 @@ module game.SDLApp;
 
 import game.model.IGame;
 
+import util.GL;
 import util.SDL;
 
 import std.stdio;
@@ -29,10 +30,28 @@ public class SDLApp
     private SDL.Surface surface;
 
     /**
+     * The OpenGL context
+     */
+
+    private SDL.GL gl_context;
+
+    /**
      * Game reference
      */
 
     private IGame game;
+
+    /**
+     * Window width
+     */
+
+    private int width;
+
+    /**
+     * Window height
+     */
+
+    private int height;
 
     /**
      * The running state of the app
@@ -61,6 +80,9 @@ public class SDLApp
             assert(false);
         }
 
+        this.width = width;
+        this.height = height;
+
         this.surface = SDL.Surface.getWindowSurface(this.win);
         if ( this.surface() is null )
         {
@@ -68,6 +90,16 @@ public class SDLApp
             SDL.Window.destroyWindow(this.win);
             assert(false);
         }
+
+        this.gl_context = SDL.GL.getContext(this.win);
+        if ( this.gl_context() is null )
+        {
+            logSDLError("Error creating SDL GL context");
+            SDL.Window.destroyWindow(this.win);
+            assert(false);
+        }
+
+        this.setupOpenGL();
 
         this.game = game;
     }
@@ -80,6 +112,7 @@ public class SDLApp
 
     ~this ( )
     {
+        SDL.GL.deleteContext();
         SDL.Surface.freeSurface(this.surface);
         SDL.Window.destroyWindow(this.win);
     }
@@ -95,6 +128,12 @@ public class SDLApp
         if ( !SDL.init() )
         {
             logSDLError("Error initializing SDL");
+            assert(false);
+        }
+
+        if ( !SDL.initGL() )
+        {
+            logSDLError("Error initializing SDL GL");
             assert(false);
         }
     }
@@ -138,7 +177,9 @@ public class SDLApp
                 }
             }
 
-            SDL.Window.updateWindow(win);
+            this.game.render();
+
+            SDL.GL.swapWindow(this.win);
         }
         catch ( Exception e )
         {
@@ -147,6 +188,20 @@ public class SDLApp
         }
 
         return 0;
+    }
+
+    /**
+     * Helper function to set up initial OpenGL state
+     */
+
+    private void setupOpenGL ( )
+    {
+        SDL.GL.setSwapInterval(1);
+
+        GL.clearColor(0.0, 0.0, 0.0, 0.0);
+        GL.matrixMode(GL.PROJECTION);
+        GL.loadIdentity();
+        GL.ortho(0.0, this.width, this.height, 1.0, -1.0, 1.0);
     }
 
     /**

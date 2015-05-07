@@ -6,6 +6,7 @@
 
 module util.SDL;
 
+import derelict.opengl3.gl; // This module is needed because reload() needs to be called after the context is created
 import derelict.sdl2.sdl;
 
 import std.conv;
@@ -67,7 +68,7 @@ public struct SDL
         {
             Window result;
 
-            result(SDL_CreateWindow(toStringz(name), 100, 100, width, height, SDL_WINDOW_SHOWN));
+            result(SDL_CreateWindow(toStringz(name), 100, 100, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN));
 
             return result;
         }
@@ -232,10 +233,123 @@ public struct SDL
     }
 
     /**
-     * Whether or not SDL has been initialized
+     * SDL GL context wrapper struct
+     */
+
+    public struct GL
+    {
+        /**
+         * SDL GL constants
+         */
+
+        public static const CONTEXT_MAJOR_VERSION = SDL_GL_CONTEXT_MAJOR_VERSION;
+        public static const CONTEXT_MINOR_VERSION = SDL_GL_CONTEXT_MINOR_VERSION;
+        public static const DOUBLEBUFFER = SDL_GL_DOUBLEBUFFER;
+        public static const DEPTH_SIZE = SDL_GL_DEPTH_SIZE;
+
+        /**
+         * SDL_GLContext pointer
+         *
+         * Static, as there can only be one
+         */
+
+        private static SDL_GLContext* sdl_glcontext = null;
+
+        /**
+         * opCall
+         *
+         * Returns:
+         *      The SDL_GLContext pointer
+         */
+
+        public SDL_GLContext* opCall ( )
+        {
+            return sdl_glcontext;
+        }
+
+        /**
+         * Get the SDL GL context
+         *
+         * Params:
+         *      win = The window to create the context from
+         *
+         * Returns:
+         *      The GL context
+         */
+
+        public static GL getContext ( Window win )
+        {
+            if ( sdl_glcontext is null )
+            {
+                auto ctx = SDL_GL_CreateContext(win());
+                sdl_glcontext = &ctx;
+                DerelictGL.reload();
+            }
+
+            GL result;
+
+            return result;
+        }
+
+        /**
+         * Delete the SDL GL context
+         */
+
+        public static void deleteContext ( )
+        in
+        {
+            assert(sdl_glcontext !is null);
+        }
+        body
+        {
+            SDL_GL_DeleteContext(*sdl_glcontext);
+        }
+
+        /**
+         * Set an SDL GL attribute
+         *
+         * Params:
+         *      attr = The attribute to set
+         *      val = The new value
+         */
+
+        public static void setAttribute ( int attr, int val )
+        {
+            SDL_GL_SetAttribute(attr, val);
+        }
+
+        /**
+         * Set the interval at which to swap window buffers
+         *
+         * Params:
+         *      interval = The interval
+         */
+
+        public static void setSwapInterval ( int interval )
+        {
+            SDL_GL_SetSwapInterval(interval);
+        }
+
+        /**
+         * Swap the buffers of the given window
+         *
+         * Params:
+         *      win = The window to swap buffers in
+         */
+
+        public static void swapWindow ( Window win )
+        {
+            SDL_GL_SwapWindow(win());
+        }
+    }
+
+    /**
+     * Whether or not SDL/SDL GL has been initialized
      */
 
     private static bool initialized = false;
+
+    private static bool gl_initialized = false;
 
     /**
      * Initialize SDL, if it hasn't been already
@@ -250,6 +364,33 @@ public struct SDL
         {
             DerelictSDL2.load();
             return initialized = SDL_Init(SDL_INIT_VIDEO) == 0;
+        }
+
+        return true;
+    }
+
+    /**
+     * Initialize the SDL OpenGL bindings, if they haven't been already
+     *
+     * SDL must be initialized first
+     *
+     * Returns:
+     *      True if SDL GL was successfully initialized
+     */
+
+    public static bool initGL ( )
+    in
+    {
+        assert(initialized);
+    }
+    body
+    {
+        if ( !gl_initialized )
+        {
+            GL.setAttribute(GL.CONTEXT_MAJOR_VERSION, 3);
+            GL.setAttribute(GL.CONTEXT_MINOR_VERSION, 2);
+            GL.setAttribute(GL.DOUBLEBUFFER, 1);
+            GL.setAttribute(GL.DEPTH_SIZE, 32);
         }
 
         return true;
