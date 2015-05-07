@@ -36,7 +36,7 @@ public class DGame : IGame
      * Game speed constant
      */
 
-    private static const SPEED = 5;
+    private static const SPEED = 2;
 
     /**
      * Square Y-distance

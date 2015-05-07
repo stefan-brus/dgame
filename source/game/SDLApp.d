@@ -18,6 +18,12 @@ import std.stdio;
 public class SDLApp
 {
     /**
+     * Frames per second
+     */
+
+    private const FPS = 30;
+
+    /**
      * The SDL window
      */
 
@@ -52,6 +58,12 @@ public class SDLApp
      */
 
     private int height;
+
+    /**
+     * Number of elapsed ticks since SDL was initialized
+     */
+
+    private uint ticks = 0;
 
     /**
      * The running state of the app
@@ -187,15 +199,14 @@ public class SDLApp
             this.game.render();
             SDL.GL.swapWindow(this.win);
 
-            static uint cur_ticks = 0, last_ticks = 0;
-            static const fps = 30;
+            auto elapsed = this.elapsedTicks();
 
-            last_ticks = cur_ticks;
-            cur_ticks = SDL.getTicks();
-            if ( cur_ticks - last_ticks < 1000 / fps )
+            if ( elapsed < 1000 / FPS )
             {
-                SDL.delay(1000 / fps - (cur_ticks - last_ticks));
+                SDL.delay(1000 / FPS - elapsed);
             }
+
+            this.ticks += elapsed;
         }
         catch ( Exception e )
         {
@@ -204,6 +215,18 @@ public class SDLApp
         }
 
         return 0;
+    }
+
+    /**
+     * Get the number of elapsed ticks since the last check
+     *
+     * Returns:
+     *      The number of elapsed ticks
+     */
+
+    private uint elapsedTicks ( )
+    {
+        return SDL.getTicks() - this.ticks;
     }
 
     /**
