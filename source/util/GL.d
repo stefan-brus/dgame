@@ -21,6 +21,7 @@ public struct GL
     public static const PROJECTION = GL_PROJECTION;
     public static const COLOR_BUFFER_BIT = GL_COLOR_BUFFER_BIT;
     public static const QUADS = GL_QUADS;
+    public static const TRIANGLES = GL_TRIANGLES;
 
     /**
      * Static constructor
