@@ -6,6 +6,7 @@
 
 module game.DGame;
 
+import game.entity.model.Direction;
 import game.entity.model.Entity;
 import game.model.IGame;
 
@@ -82,13 +83,13 @@ public class DGame : IGame
      * The player's current direction
      */
 
-    private Entity.Directions player_dir;
+    private Directions player_dir;
 
     /**
      * The square's current direction
      */
 
-    private Entity.Directions square_dir;
+    private Directions square_dir;
 
     /**
      * Constructor
@@ -106,7 +107,7 @@ public class DGame : IGame
         this.player = new Triangle();
         this.square = new Square();
 
-        this.square_dir = Entity.DIR_UP;
+        this.square_dir = DIR_UP;
     }
 
     /**
@@ -142,7 +143,7 @@ public class DGame : IGame
             return false;
         }
 
-        with ( Entity.Direction )
+        with ( Direction )
         {
             this.player_dir[UP] = key_state[SDL.Event.SCAN_W] > 0;
             this.player_dir[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
@@ -161,18 +162,18 @@ public class DGame : IGame
     {
         // Move in the player's directions, minus any boundaries that may be touching
         auto bound_dirs = this.player.getBoundaries(this.width, this.height);
-        auto dirs = Entity.intersectDirs(this.player_dir, bound_dirs);
+        auto dirs = .intersectDirs(this.player_dir, bound_dirs);
 
         this.player.move(dirs);
 
         // Move the square likewise
         bound_dirs = this.square.getBoundaries(this.width, this.height);
-        dirs = Entity.intersectDirs(this.square_dir, bound_dirs);
+        dirs = intersectDirs(this.square_dir, bound_dirs);
 
         // Bounce the square if it hits a boundary
-        if ( Entity.still(dirs) )
+        if ( still(dirs) )
         {
-            this.square_dir = this.square_dir == Entity.DIR_UP ? Entity.DIR_DOWN : Entity.DIR_UP;
+            this.square_dir = this.square_dir == DIR_UP ? DIR_DOWN : DIR_UP;
             this.square.move(this.square_dir);
         }
         else
