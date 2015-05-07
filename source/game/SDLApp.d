@@ -177,6 +177,7 @@ public class SDLApp
             }
 
             this.game.render();
+            this.game.step(0);
 
             SDL.GL.swapWindow(this.win);
         }

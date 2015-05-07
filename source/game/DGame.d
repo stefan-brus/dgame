@@ -46,9 +46,6 @@ public class DGame : IGame
         this.drawTriangle();
 
         GL.flush();
-
-        this.sq_dist -= this.sq_dist <= -100 ? 0 : SPEED;
-        this.tri_dist += this.tri_dist >= 640 - 200 - 200 ? 0 : SPEED;
     }
 
     /**
@@ -69,7 +66,8 @@ public class DGame : IGame
 
     public void step ( uint ms )
     {
-
+        this.sq_dist -= this.sq_dist <= -100 ? 0 : SPEED;
+        this.tri_dist += this.tri_dist >= 640 - 200 - 200 ? 0 : SPEED;
     }
 
     /**
