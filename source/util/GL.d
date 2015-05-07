@@ -135,6 +135,20 @@ public struct GL
     }
 
     /**
+     * Set the current color
+     *
+     * Params:
+     *      r = red
+     *      g = green
+     *      b = blue
+     */
+
+    public static void color3ub ( ubyte r, ubyte g, ubyte b )
+    {
+        glColor3ub(r, g, b);
+    }
+
+    /**
      * Flush the GL command buffer (I think)
      */
 

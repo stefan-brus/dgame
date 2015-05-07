@@ -23,6 +23,7 @@ public class DGame : IGame
     public void render ( )
     {
         GL.clear(GL.COLOR_BUFFER_BIT);
+        GL.color3ub(0xFF, 0x00, 0x00);
         GL.begin(GL.QUADS);
         GL.vertex2f(200, 100);
         GL.vertex2f(400, 100);
