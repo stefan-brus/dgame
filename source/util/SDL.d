@@ -163,10 +163,15 @@ public struct SDL
     public struct Event
     {
         /**
-         * SDL_Quit constant
+         * SDL event constants
          */
 
         public static const QUIT = SDL_QUIT;
+        public static const KEYDOWN = SDL_KEYDOWN;
+        public static const KEY_W = SDLK_w;
+        public static const KEY_A = SDLK_a;
+        public static const KEY_S = SDLK_s;
+        public static const KEY_D = SDLK_d;
 
         /**
          * The SDL_Event pointer

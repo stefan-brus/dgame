@@ -168,16 +168,18 @@ public class SDLApp
 
         try while ( this.running )
         {
-            while( SDL.Event.pollEvent(event) )
+            while ( SDL.Event.pollEvent(event) )
             {
                 if ( event().type == SDL.Event.QUIT )
                 {
                     this.running = false;
+                    break;
                 }
-            }
 
-            this.game.render();
-            this.game.step(0);
+                this.game.handle(event);
+                this.game.render();
+                this.game.step(0);
+            }
 
             SDL.GL.swapWindow(this.win);
         }

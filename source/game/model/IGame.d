@@ -9,6 +9,8 @@
 
 module game.model.IGame;
 
+import util.SDL;
+
 /**
  * IGame interface
  */
@@ -23,9 +25,12 @@ public interface IGame
 
     /**
      * Handle the given event
+     *
+     * Params:
+     *      event = The event
      */
 
-    void handle ( );
+    void handle ( SDL.Event event );
 
     /**
      * Update the world
