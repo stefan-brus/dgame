@@ -113,7 +113,6 @@ public class SDLApp
     ~this ( )
     {
         SDL.GL.deleteContext();
-        SDL.Surface.freeSurface(this.surface);
         SDL.Window.destroyWindow(this.win);
     }
 
