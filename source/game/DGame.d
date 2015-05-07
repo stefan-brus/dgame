@@ -51,7 +51,7 @@ public class DGame : IGame
         GL.popMatrix();
 
         GL.flush();
-        sq_dist -= speed;
+        sq_dist -= sq_dist <= -100 ? 0 : speed;
         tri_dist += speed;
     }
 
