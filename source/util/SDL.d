@@ -168,10 +168,10 @@ public struct SDL
 
         public static const QUIT = SDL_QUIT;
         public static const KEYDOWN = SDL_KEYDOWN;
-        public static const KEY_W = SDLK_w;
-        public static const KEY_A = SDLK_a;
-        public static const KEY_S = SDLK_s;
-        public static const KEY_D = SDLK_d;
+        public static const SCAN_W = SDL_SCANCODE_W;
+        public static const SCAN_A = SDL_SCANCODE_A;
+        public static const SCAN_S = SDL_SCANCODE_S;
+        public static const SCAN_D = SDL_SCANCODE_D;
 
         /**
          * The SDL_Event pointer
@@ -399,6 +399,42 @@ public struct SDL
         }
 
         return true;
+    }
+
+    /**
+     * Get the current keyboard state as a ubyte array
+     *
+     * Returns:
+     *      The keyboard state array pointer
+     */
+
+    public static ubyte* getKeyboardState ( )
+    {
+        return SDL_GetKeyboardState(null);
+    }
+
+    /**
+     * Get the number of elapsed ticks since SDL was initialized
+     *
+     * Returns:
+     *      The number of ticks
+     */
+
+    public static uint getTicks ( )
+    {
+        return SDL_GetTicks();
+    }
+
+    /**
+     * Sleep for the given number of ms
+     *
+     * Params:
+     *      ms = The number of ms to sleep for
+     */
+
+    public static void delay ( uint ms )
+    {
+        SDL_Delay(ms);
     }
 
     /**

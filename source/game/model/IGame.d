@@ -28,9 +28,12 @@ public interface IGame
      *
      * Params:
      *      event = The event
+     *
+     * Returns:
+     *      True if successful
      */
 
-    void handle ( SDL.Event event );
+    bool handle ( SDL.Event event );
 
     /**
      * Update the world

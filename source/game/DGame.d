@@ -18,10 +18,25 @@ import util.SDL;
 public class DGame : IGame
 {
     /**
+     * State to handle whether or not the player is moving in a certain direction
+     */
+
+    private alias bool[Direction] Directions;
+
+    private enum Direction {
+        UP,
+        LEFT,
+        DOWN,
+        RIGHT
+    }
+
+    private Directions dirs;
+
+    /**
      * Game speed constant
      */
 
-    private static const SPEED = 10;
+    private static const SPEED = 5;
 
     /**
      * Square Y-distance
@@ -55,34 +70,29 @@ public class DGame : IGame
      *
      * Params:
      *      event = The event
+     *
+     * Returns:
+     *      True on success
      */
 
-    public void handle ( SDL.Event event )
+    public bool handle ( SDL.Event event )
     {
-        if ( event().type == SDL.Event.KEYDOWN )
+        auto key_state = SDL.getKeyboardState();
+
+        if ( key_state is null )
         {
-            switch ( event().key.keysym.sym )
-            {
-                case SDL.Event.KEY_W:
-                    tri_y -= tri_y + 100 <= 0 ? 0 : SPEED;
-                    break;
-
-                case SDL.Event.KEY_A:
-                    tri_x -= tri_x + 200 <= 0 ? 0 : SPEED;
-                    break;
-
-                case SDL.Event.KEY_S:
-                    tri_y += tri_y + 200 >= 480 ? 0 : SPEED;
-                    break;
-
-                case SDL.Event.KEY_D:
-                    tri_x += tri_x + 400 >= 640 ? 0 : SPEED;
-                    break;
-
-                default:
-                    return;
-            }
+            return false;
         }
+
+        with ( Direction )
+        {
+            this.dirs[UP] = key_state[SDL.Event.SCAN_W] > 0;
+            this.dirs[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
+            this.dirs[DOWN] = key_state[SDL.Event.SCAN_S] > 0;
+            this.dirs[RIGHT] = key_state[SDL.Event.SCAN_D] > 0;
+        }
+
+        return true;
     }
 
     /**
@@ -95,6 +105,14 @@ public class DGame : IGame
     public void step ( uint ms )
     {
         this.sq_dist -= this.sq_dist <= -100 ? 0 : SPEED;
+
+        with ( Direction )
+        {
+            this.tri_y -= this.dirs[UP] && this.tri_y + 100 >= 0 ? SPEED : 0;
+            this.tri_x -= this.dirs[LEFT] && this.tri_x + 200 >= 0 ? SPEED : 0;
+            this.tri_y += this.dirs[DOWN] && this.tri_y + 200 <= 480 ? SPEED : 0;
+            this.tri_x += this.dirs[RIGHT] && this.tri_x + 400 <= 640 ? SPEED : 0;
+        }
     }
 
     /**

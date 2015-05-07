@@ -175,13 +175,27 @@ public class SDLApp
                     this.running = false;
                     break;
                 }
-
-                this.game.handle(event);
-                this.game.render();
-                this.game.step(0);
             }
 
+            if ( !this.game.handle(event) )
+            {
+                logSDLError("Error handling event");
+                return 1;
+            }
+
+            this.game.step(0);
+            this.game.render();
             SDL.GL.swapWindow(this.win);
+
+            static uint cur_ticks = 0, last_ticks = 0;
+            static const fps = 30;
+
+            last_ticks = cur_ticks;
+            cur_ticks = SDL.getTicks();
+            if ( cur_ticks - last_ticks < 1000 / fps )
+            {
+                SDL.delay(1000 / fps - (cur_ticks - last_ticks));
+            }
         }
         catch ( Exception e )
         {
