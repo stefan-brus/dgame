@@ -21,7 +21,7 @@ public class SDLApp
      * Frames per second
      */
 
-    private const FPS = 75;
+    private enum FPS = 75;
 
     /**
      * The SDL window

@@ -166,12 +166,12 @@ public struct SDL
          * SDL event constants
          */
 
-        public static const QUIT = SDL_QUIT;
-        public static const KEYDOWN = SDL_KEYDOWN;
-        public static const SCAN_W = SDL_SCANCODE_W;
-        public static const SCAN_A = SDL_SCANCODE_A;
-        public static const SCAN_S = SDL_SCANCODE_S;
-        public static const SCAN_D = SDL_SCANCODE_D;
+        public static enum QUIT = SDL_QUIT;
+        public static enum KEYDOWN = SDL_KEYDOWN;
+        public static enum SCAN_W = SDL_SCANCODE_W;
+        public static enum SCAN_A = SDL_SCANCODE_A;
+        public static enum SCAN_S = SDL_SCANCODE_S;
+        public static enum SCAN_D = SDL_SCANCODE_D;
 
         /**
          * The SDL_Event pointer
@@ -247,10 +247,10 @@ public struct SDL
          * SDL GL constants
          */
 
-        public static const CONTEXT_MAJOR_VERSION = SDL_GL_CONTEXT_MAJOR_VERSION;
-        public static const CONTEXT_MINOR_VERSION = SDL_GL_CONTEXT_MINOR_VERSION;
-        public static const DOUBLEBUFFER = SDL_GL_DOUBLEBUFFER;
-        public static const DEPTH_SIZE = SDL_GL_DEPTH_SIZE;
+        public static enum CONTEXT_MAJOR_VERSION = SDL_GL_CONTEXT_MAJOR_VERSION;
+        public static enum CONTEXT_MINOR_VERSION = SDL_GL_CONTEXT_MINOR_VERSION;
+        public static enum DOUBLEBUFFER = SDL_GL_DOUBLEBUFFER;
+        public static enum DEPTH_SIZE = SDL_GL_DEPTH_SIZE;
 
         /**
          * SDL_GLContext pointer

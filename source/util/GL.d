@@ -18,10 +18,10 @@ public struct GL
      * OpenGL constants
      */
 
-    public static const PROJECTION = GL_PROJECTION;
-    public static const COLOR_BUFFER_BIT = GL_COLOR_BUFFER_BIT;
-    public static const QUADS = GL_QUADS;
-    public static const TRIANGLES = GL_TRIANGLES;
+    public static enum PROJECTION = GL_PROJECTION;
+    public static enum COLOR_BUFFER_BIT = GL_COLOR_BUFFER_BIT;
+    public static enum QUADS = GL_QUADS;
+    public static enum TRIANGLES = GL_TRIANGLES;
 
     /**
      * Static constructor
