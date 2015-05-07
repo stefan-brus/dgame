@@ -6,6 +6,7 @@
 
 module game.DGame;
 
+import game.entity.model.Entity;
 import game.model.IGame;
 
 import util.GL;
@@ -18,38 +19,87 @@ import util.SDL;
 public class DGame : IGame
 {
     /**
-     * State to handle whether or not the player is moving in a certain direction
+     * The size of the game area in pixels
      */
 
-    private alias bool[Direction] Directions;
+    private int width;
+    private int height;
 
-    private enum Direction {
-        UP,
-        LEFT,
-        DOWN,
-        RIGHT
+    /**
+     * The player triangle entity
+     */
+
+    private class Triangle : Entity
+    {
+        public this ( )
+        {
+            super(200, 100, 200, 100);
+            this.speed = 2.0;
+        }
+
+        override public void draw ( )
+        {
+            GL.begin(GL.TRIANGLES);
+            GL.color3ub(0xFF, 0x00, 0x00);
+            GL.vertex2f(this.x + (this.width / 2), this.y);
+            GL.color3ub(0x00, 0xFF, 0x00);
+            GL.vertex2f(this.x + this.width, this.y + this.height);
+            GL.color3ub(0x00, 0x00, 0xFF);
+            GL.vertex2f(this.x, this.y + this.height);
+            GL.end();
+        }
     }
 
-    private Directions player_dir;
+    private Triangle player;
 
     /**
-     * Game speed constant
+     * The square entity
      */
 
-    private static enum SPEED = 2;
+    private class Square : Entity
+    {
+        public this ( )
+        {
+            super(200, 100, 200, 200);
+            this.speed = 0.75;
+        }
+
+        override public void draw ( )
+        {
+            GL.begin(GL.QUADS);
+            GL.color3ub(0xFF, 0x00, 0x00);
+            GL.vertex2f(this.x, this.y);
+            GL.vertex2f(this.x + this.width, this.y);
+            GL.vertex2f(this.x + this.width, this.y + this.height);
+            GL.vertex2f(this.x, this.y + this.height);
+            GL.end();
+        }
+    }
+
+    private Square square;
 
     /**
-     * Square Y-distance
+     * The player's current direction
      */
 
-    private float sq_dist = 0;
+    private Entity.Directions player_dir;
 
     /**
-     * Triangle distance
+     * Constructor
+     *
+     * Params:
+     *      width = The game width
+     *      height = The game height
      */
 
-    private float tri_x = 0;
-    private float tri_y = 0;
+    public this ( int width, int height )
+    {
+        this.width = width;
+        this.height = height;
+
+        this.player = new Triangle();
+        this.square = new Square();
+    }
 
     /**
      * Render the world
@@ -59,8 +109,8 @@ public class DGame : IGame
     {
         GL.clear(GL.COLOR_BUFFER_BIT);
 
-        this.drawSquare();
-        this.drawTriangle();
+        this.square.draw();
+        this.player.draw();
 
         GL.flush();
     }
@@ -84,7 +134,7 @@ public class DGame : IGame
             return false;
         }
 
-        with ( Direction )
+        with ( Entity.Direction )
         {
             this.player_dir[UP] = key_state[SDL.Event.SCAN_W] > 0;
             this.player_dir[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
@@ -101,51 +151,16 @@ public class DGame : IGame
 
     public void step ( )
     {
-        this.sq_dist -= this.sq_dist <= -100 ? 0 : SPEED;
+        // Move in the player's directions, minus any boundaries that may be touching
+        auto bound_dirs = this.player.getBoundaries(this.width, this.height);
+        auto dirs = Entity.intersectDirs(this.player_dir, bound_dirs);
 
-        with ( Direction )
-        {
-            this.tri_y -= this.player_dir[UP] && this.tri_y + 100 >= 0 ? SPEED : 0;
-            this.tri_x -= this.player_dir[LEFT] && this.tri_x + 200 >= 0 ? SPEED : 0;
-            this.tri_y += this.player_dir[DOWN] && this.tri_y + 200 <= 480 ? SPEED : 0;
-            this.tri_x += this.player_dir[RIGHT] && this.tri_x + 400 <= 640 ? SPEED : 0;
-        }
-    }
+        this.player.move(dirs);
 
-    /**
-     * Draw the square
-     */
+        // Move the square likewise
+        bound_dirs = this.square.getBoundaries(this.width, this.height);
+        dirs = Entity.intersectDirs(Entity.DIR_UP, bound_dirs);
 
-    private void drawSquare ( )
-    {
-        GL.pushMatrix();
-        GL.translate2f(0, this.sq_dist);
-        GL.begin(GL.QUADS);
-        GL.color3ub(0xFF, 0x00, 0x00);
-        GL.vertex2f(200, 100);
-        GL.vertex2f(400, 100);
-        GL.vertex2f(400, 300);
-        GL.vertex2f(200, 300);
-        GL.end();
-        GL.popMatrix();
-    }
-
-    /**
-     * Draw the triangle
-     */
-
-    private void drawTriangle ( )
-    {
-        GL.pushMatrix();
-        GL.translate2f(this.tri_x, this.tri_y);
-        GL.begin(GL.TRIANGLES);
-        GL.color3ub(0xFF, 0x00, 0x00);
-        GL.vertex2f(300, 100);
-        GL.color3ub(0x00, 0xFF, 0x00);
-        GL.vertex2f(400, 200);
-        GL.color3ub(0x00, 0x00, 0xFF);
-        GL.vertex2f(200, 200);
-        GL.end();
-        GL.popMatrix();
+        this.square.move(dirs);
     }
 }

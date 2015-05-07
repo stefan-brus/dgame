@@ -5,7 +5,8 @@ import game.SDLApp;
 
 int main ( )
 {
-    auto game = new DGame;
-    auto app = new SDLApp("DGame", 640, 480, game);
+    enum width = 640, height = 480;
+    auto game = new DGame(width, height);
+    auto app = new SDLApp("DGame", width, height, game);
     return app.run();
 }
