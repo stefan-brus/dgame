@@ -17,42 +17,38 @@ import util.GL;
 public class DGame : IGame
 {
     /**
+     * Game speed constant
+     */
+
+    private static const SPEED = 0.1;
+
+    /**
+     * Square Y-distance
+     */
+
+    private float sq_dist = 0;
+
+    /**
+     * Triangle X-distance
+     */
+
+    private float tri_dist = 0;
+
+    /**
      * Render the world
      */
 
     public void render ( )
     {
-        static const speed = 0.1;
-        static float sq_dist = 0;
-        static float tri_dist = 0;
         GL.clear(GL.COLOR_BUFFER_BIT);
 
-        GL.pushMatrix();
-        GL.translate2f(0, sq_dist);
-        GL.begin(GL.QUADS);
-        GL.color3ub(0xFF, 0x00, 0x00);
-        GL.vertex2f(200, 100);
-        GL.vertex2f(400, 100);
-        GL.vertex2f(400, 300);
-        GL.vertex2f(200, 300);
-        GL.end();
-        GL.popMatrix();
-
-        GL.pushMatrix();
-        GL.translate2f(tri_dist, 0);
-        GL.begin(GL.TRIANGLES);
-        GL.color3ub(0xFF, 0x00, 0x00);
-        GL.vertex2f(300, 100);
-        GL.color3ub(0x00, 0xFF, 0x00);
-        GL.vertex2f(400, 200);
-        GL.color3ub(0x00, 0x00, 0xFF);
-        GL.vertex2f(200, 200);
-        GL.end();
-        GL.popMatrix();
+        this.drawSquare();
+        this.drawTriangle();
 
         GL.flush();
-        sq_dist -= sq_dist <= -100 ? 0 : speed;
-        tri_dist += speed;
+
+        this.sq_dist -= this.sq_dist <= -100 ? 0 : SPEED;
+        this.tri_dist += this.tri_dist >= 640 - 200 - 200 ? 0 : SPEED;
     }
 
     /**
@@ -74,5 +70,42 @@ public class DGame : IGame
     public void step ( uint ms )
     {
 
+    }
+
+    /**
+     * Draw the square
+     */
+
+    private void drawSquare ( )
+    {
+        GL.pushMatrix();
+        GL.translate2f(0, this.sq_dist);
+        GL.begin(GL.QUADS);
+        GL.color3ub(0xFF, 0x00, 0x00);
+        GL.vertex2f(200, 100);
+        GL.vertex2f(400, 100);
+        GL.vertex2f(400, 300);
+        GL.vertex2f(200, 300);
+        GL.end();
+        GL.popMatrix();
+    }
+
+    /**
+     * Draw the triangle
+     */
+
+    private void drawTriangle ( )
+    {
+        GL.pushMatrix();
+        GL.translate2f(this.tri_dist, 0);
+        GL.begin(GL.TRIANGLES);
+        GL.color3ub(0xFF, 0x00, 0x00);
+        GL.vertex2f(300, 100);
+        GL.color3ub(0x00, 0xFF, 0x00);
+        GL.vertex2f(400, 200);
+        GL.color3ub(0x00, 0x00, 0xFF);
+        GL.vertex2f(200, 200);
+        GL.end();
+        GL.popMatrix();
     }
 }
