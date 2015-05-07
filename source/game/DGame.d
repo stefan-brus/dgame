@@ -85,6 +85,12 @@ public class DGame : IGame
     private Entity.Directions player_dir;
 
     /**
+     * The square's current direction
+     */
+
+    private Entity.Directions square_dir;
+
+    /**
      * Constructor
      *
      * Params:
@@ -99,6 +105,8 @@ public class DGame : IGame
 
         this.player = new Triangle();
         this.square = new Square();
+
+        this.square_dir = Entity.DIR_UP;
     }
 
     /**
@@ -159,8 +167,17 @@ public class DGame : IGame
 
         // Move the square likewise
         bound_dirs = this.square.getBoundaries(this.width, this.height);
-        dirs = Entity.intersectDirs(Entity.DIR_UP, bound_dirs);
+        dirs = Entity.intersectDirs(this.square_dir, bound_dirs);
 
-        this.square.move(dirs);
+        // Bounce the square if it hits a boundary
+        if ( Entity.still(dirs) )
+        {
+            this.square_dir = this.square_dir == Entity.DIR_UP ? Entity.DIR_DOWN : Entity.DIR_UP;
+            this.square.move(this.square_dir);
+        }
+        else
+        {
+            this.square.move(dirs);
+        }
     }
 }

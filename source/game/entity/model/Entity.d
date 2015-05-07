@@ -29,8 +29,15 @@ public abstract class Entity
 
     public enum Directions DIR_UP = [
         Direction.UP: true,
-        Direction.DOWN: false,
         Direction.LEFT: false,
+        Direction.DOWN: false,
+        Direction.RIGHT: false
+    ];
+
+    public enum Directions DIR_DOWN = [
+        Direction.UP: false,
+        Direction.LEFT: false,
+        Direction.DOWN: true,
         Direction.RIGHT: false
     ];
 
@@ -129,6 +136,13 @@ public abstract class Entity
 
     /**
      * Helper function to get the intersection of 2 sets of directions
+     *
+     * Params:
+     *      d1 = The first set of directions
+     *      d2 = The second set of directions
+     *
+     * Returns:
+     *      The intersection of d1 and d2
      */
 
     public static Directions intersectDirs ( Directions d1, Directions d2 )
@@ -144,5 +158,23 @@ public abstract class Entity
         }
 
         return dirs;
+    }
+
+    /**
+     * Check if a set of directions isn't going anywhere
+     *
+     * Params:
+     *      dirs = The directions to check
+     *
+     * Returns:
+     *      True if all directions in the given set are false
+     */
+
+    public static bool still ( Directions dirs )
+    {
+        with ( Direction )
+        {
+            return !dirs[UP] && !dirs[LEFT] && !dirs[DOWN] && !dirs[RIGHT];
+        }
     }
 }
