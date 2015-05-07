@@ -30,7 +30,7 @@ public class DGame : IGame
         RIGHT
     }
 
-    private Directions dirs;
+    private Directions player_dir;
 
     /**
      * Game speed constant
@@ -86,10 +86,10 @@ public class DGame : IGame
 
         with ( Direction )
         {
-            this.dirs[UP] = key_state[SDL.Event.SCAN_W] > 0;
-            this.dirs[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
-            this.dirs[DOWN] = key_state[SDL.Event.SCAN_S] > 0;
-            this.dirs[RIGHT] = key_state[SDL.Event.SCAN_D] > 0;
+            this.player_dir[UP] = key_state[SDL.Event.SCAN_W] > 0;
+            this.player_dir[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
+            this.player_dir[DOWN] = key_state[SDL.Event.SCAN_S] > 0;
+            this.player_dir[RIGHT] = key_state[SDL.Event.SCAN_D] > 0;
         }
 
         return true;
@@ -105,10 +105,10 @@ public class DGame : IGame
 
         with ( Direction )
         {
-            this.tri_y -= this.dirs[UP] && this.tri_y + 100 >= 0 ? SPEED : 0;
-            this.tri_x -= this.dirs[LEFT] && this.tri_x + 200 >= 0 ? SPEED : 0;
-            this.tri_y += this.dirs[DOWN] && this.tri_y + 200 <= 480 ? SPEED : 0;
-            this.tri_x += this.dirs[RIGHT] && this.tri_x + 400 <= 640 ? SPEED : 0;
+            this.tri_y -= this.player_dir[UP] && this.tri_y + 100 >= 0 ? SPEED : 0;
+            this.tri_x -= this.player_dir[LEFT] && this.tri_x + 200 >= 0 ? SPEED : 0;
+            this.tri_y += this.player_dir[DOWN] && this.tri_y + 200 <= 480 ? SPEED : 0;
+            this.tri_x += this.player_dir[RIGHT] && this.tri_x + 400 <= 640 ? SPEED : 0;
         }
     }
 
