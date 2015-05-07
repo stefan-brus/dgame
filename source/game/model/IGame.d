@@ -37,10 +37,7 @@ public interface IGame
 
     /**
      * Update the world
-     *
-     * Params:
-     *      ms = The amount of time lapsed in milliseconds
      */
 
-     void step ( uint ms );
+     void step ( );
 }

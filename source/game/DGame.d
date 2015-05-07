@@ -97,12 +97,9 @@ public class DGame : IGame
 
     /**
      * Update the world
-     *
-     * Params:
-     *      ms = The amount of time lapsed in milliseconds
      */
 
-    public void step ( uint ms )
+    public void step ( )
     {
         this.sq_dist -= this.sq_dist <= -100 ? 0 : SPEED;
 
