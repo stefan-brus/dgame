@@ -150,6 +150,37 @@ public struct GL
     }
 
     /**
+     * Translate the current matrix along (x, y)
+     *
+     * Params:
+     *      x = The distance along the x axis
+     *      y = The distance along the y axis
+     */
+
+    public static void translate2f ( float x, float y )
+    {
+        glTranslatef(x, y, 0);
+    }
+
+    /**
+     * Push the current matrix to some kind of stack (presumably)
+     */
+
+    public static void pushMatrix ( )
+    {
+        glPushMatrix();
+    }
+
+    /**
+     * (Probably) pop the top matrix from the magic matrix stack
+     */
+
+    public static void popMatrix ( )
+    {
+        glPopMatrix();
+    }
+
+    /**
      * Flush the GL command buffer (I think)
      */
 
