@@ -80,18 +80,6 @@ public class DGame : IGame
     private Square square;
 
     /**
-     * The player's current direction
-     */
-
-    private Directions player_dir;
-
-    /**
-     * The square's current direction
-     */
-
-    private Directions square_dir;
-
-    /**
      * Constructor
      *
      * Params:
@@ -107,7 +95,7 @@ public class DGame : IGame
         this.player = new Triangle();
         this.square = new Square();
 
-        this.square_dir = DIR_UP;
+        this.square.dir = DIR_UP;
     }
 
     /**
@@ -145,10 +133,10 @@ public class DGame : IGame
 
         with ( Direction )
         {
-            this.player_dir[UP] = key_state[SDL.Event.SCAN_W] > 0;
-            this.player_dir[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
-            this.player_dir[DOWN] = key_state[SDL.Event.SCAN_S] > 0;
-            this.player_dir[RIGHT] = key_state[SDL.Event.SCAN_D] > 0;
+            this.player.dir[UP] = key_state[SDL.Event.SCAN_W] > 0;
+            this.player.dir[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
+            this.player.dir[DOWN] = key_state[SDL.Event.SCAN_S] > 0;
+            this.player.dir[RIGHT] = key_state[SDL.Event.SCAN_D] > 0;
         }
 
         return true;
@@ -162,23 +150,19 @@ public class DGame : IGame
     {
         // Move in the player's directions, minus any boundaries that may be touching
         auto bound_dirs = this.player.getBoundaries(this.width, this.height);
-        auto dirs = .intersectDirs(this.player_dir, bound_dirs);
+        this.player.dir = intersectDirs(this.player.dir, bound_dirs);
 
-        this.player.move(dirs);
+        this.player.move();
 
         // Move the square likewise
         bound_dirs = this.square.getBoundaries(this.width, this.height);
-        dirs = intersectDirs(this.square_dir, bound_dirs);
 
         // Bounce the square if it hits a boundary
-        if ( still(dirs) )
+        if ( still(intersectDirs(this.square.dir, bound_dirs)) )
         {
-            this.square_dir = this.square_dir == DIR_UP ? DIR_DOWN : DIR_UP;
-            this.square.move(this.square_dir);
+            this.square.dir = this.square.dir == DIR_UP ? DIR_DOWN : DIR_UP;
         }
-        else
-        {
-            this.square.move(dirs);
-        }
+
+        this.square.move();
     }
 }

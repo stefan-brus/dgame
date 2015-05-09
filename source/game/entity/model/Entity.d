@@ -33,6 +33,12 @@ public abstract class Entity
     protected float speed = 0.0;
 
     /**
+     * The entity's direction
+     */
+
+    public Directions dir;
+
+    /**
      * Constructor
      *
      * Params:
@@ -57,20 +63,17 @@ public abstract class Entity
     public abstract void draw ( );
 
     /**
-     * Move the entity according to its speed and the given directions
-     *
-     * Params:
-     *      dirs = The directions
+     * Move the entity according to its speed and directions
      */
 
-    public void move ( Directions dirs )
+    public void move ( )
     {
         with ( Direction )
         {
-            this.y -= dirs[UP] ? this.speed : 0;
-            this.x -= dirs[LEFT] ? this.speed : 0;
-            this.y += dirs[DOWN] ? this.speed : 0;
-            this.x += dirs[RIGHT] ? this.speed : 0;
+            this.y -= this.dir[UP] ? this.speed : 0;
+            this.x -= this.dir[LEFT] ? this.speed : 0;
+            this.y += this.dir[DOWN] ? this.speed : 0;
+            this.x += this.dir[RIGHT] ? this.speed : 0;
         }
     }
 
