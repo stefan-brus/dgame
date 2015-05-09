@@ -54,32 +54,6 @@ public class DGame : IGame
     private Triangle player;
 
     /**
-     * The square entity
-     */
-
-    private class Square : Entity
-    {
-        public this ( )
-        {
-            super(200, 100, 200, 200);
-            this.speed = 0.75;
-        }
-
-        override public void draw ( )
-        {
-            GL.begin(GL.QUADS);
-            GL.color3ub(0xFF, 0x00, 0x00);
-            GL.vertex2f(this.x, this.y);
-            GL.vertex2f(this.x + this.width, this.y);
-            GL.vertex2f(this.x + this.width, this.y + this.height);
-            GL.vertex2f(this.x, this.y + this.height);
-            GL.end();
-        }
-    }
-
-    private Square square;
-
-    /**
      * Constructor
      *
      * Params:
@@ -93,9 +67,6 @@ public class DGame : IGame
         this.height = height;
 
         this.player = new Triangle();
-        this.square = new Square();
-
-        this.square.dir = DIR_UP;
     }
 
     /**
@@ -106,7 +77,6 @@ public class DGame : IGame
     {
         GL.clear(GL.COLOR_BUFFER_BIT);
 
-        this.square.draw();
         this.player.draw();
 
         GL.flush();
@@ -153,16 +123,5 @@ public class DGame : IGame
         this.player.dir = intersectDirs(this.player.dir, bound_dirs);
 
         this.player.move();
-
-        // Move the square likewise
-        bound_dirs = this.square.getBoundaries(this.width, this.height);
-
-        // Bounce the square if it hits a boundary
-        if ( still(intersectDirs(this.square.dir, bound_dirs)) )
-        {
-            this.square.dir = this.square.dir == DIR_UP ? DIR_DOWN : DIR_UP;
-        }
-
-        this.square.move();
     }
 }
