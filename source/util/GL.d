@@ -22,6 +22,15 @@ public struct GL
     public static enum COLOR_BUFFER_BIT = GL_COLOR_BUFFER_BIT;
     public static enum QUADS = GL_QUADS;
     public static enum TRIANGLES = GL_TRIANGLES;
+    public static enum TEXTURE_2D = GL_TEXTURE_2D;
+    public static enum LINEAR = GL_LINEAR;
+    public static enum TEXTURE_MIN_FILTER = GL_TEXTURE_MIN_FILTER;
+    public static enum TEXTURE_MAG_FILTER = GL_TEXTURE_MAG_FILTER;
+    public static enum RGBA = GL_RGBA;
+    public static enum UNSIGNED_BYTE = GL_UNSIGNED_BYTE;
+    public static enum BLEND = GL_BLEND;
+    public static enum SRC_ALPHA = GL_SRC_ALPHA;
+    public static enum ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA;
 
     /**
      * Static constructor
@@ -32,6 +41,18 @@ public struct GL
     static this ( )
     {
         DerelictGL.load();
+    }
+
+    /**
+     * Enable an OpenGL capability
+     *
+     * Params:
+     *      cap = The capability
+     */
+
+    public static void enable ( int cap )
+    {
+        glEnable(cap);
     }
 
     /**
@@ -178,6 +199,89 @@ public struct GL
     public static void popMatrix ( )
     {
         glPopMatrix();
+    }
+
+    /**
+     * Generate a texture handle
+     *
+     * Returns:
+     *      The texture handle
+     */
+
+    public static uint genTexture ( )
+    {
+        uint result;
+
+        glGenTextures(1, &result);
+
+        return result;
+    }
+
+    /**
+     * Bind the given texture handle
+     *
+     * Params:
+     *      handle = The texture handle
+     */
+
+    public static void bindTexture ( uint handle )
+    {
+        glBindTexture(TEXTURE_2D, handle);
+    }
+
+    /**
+     * Set a texture parameter
+     *
+     * Params:
+     *      pname = The parameter name
+     *      param = The parameter value
+     */
+
+    public static void texParameteri ( int pname, int param )
+    {
+        glTexParameteri(TEXTURE_2D, pname, param);
+    }
+
+    /**
+     * Specify an image for a texture
+     *
+     * Most parameters in the glTexImage2D call use default values
+     *
+     * Params:
+     *      width = The width
+     *      height = The height
+     *      pixels = The pixel data
+     */
+
+    public static void texImage2D ( int width, int height, void* pixels )
+    {
+        glTexImage2D(TEXTURE_2D, 0, 4, width, height, 0, RGBA, UNSIGNED_BYTE, pixels);
+    }
+
+    /**
+     * Set the current texture coordinates
+     *
+     * Params:
+     *      s = The s texture coordinate
+     *      t = The t texture coordinate
+     */
+
+    public static void texCoord2i ( int s, int t )
+    {
+        glTexCoord2i(s, t);
+    }
+
+    /**
+     * Specify how to blend pixels
+     *
+     * Params:
+     *      sfactor = The source factor
+     *      dfactor = The destination factor
+     */
+
+    public static void blendFunc ( int sfactor, int dfactor )
+    {
+        glBlendFunc(sfactor, dfactor);
     }
 
     /**

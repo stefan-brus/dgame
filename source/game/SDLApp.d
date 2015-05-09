@@ -178,35 +178,40 @@ public class SDLApp
 
         auto event = SDL.Event.createEvent();
 
-        try while ( this.running )
+        try
         {
-            while ( SDL.Event.pollEvent(event) )
+            this.game.init();
+
+            while ( this.running )
             {
-                if ( event().type == SDL.Event.QUIT )
+                while ( SDL.Event.pollEvent(event) )
                 {
-                    this.running = false;
-                    break;
+                    if ( event().type == SDL.Event.QUIT )
+                    {
+                        this.running = false;
+                        break;
+                    }
                 }
+
+                if ( !this.game.handle(event) )
+                {
+                    logSDLError("Error handling event");
+                    return 1;
+                }
+
+                this.game.step();
+                this.game.render();
+                SDL.GL.swapWindow(this.win);
+
+                auto elapsed = this.elapsedTicks();
+
+                if ( elapsed < 1000 / FPS )
+                {
+                    SDL.delay(1000 / FPS - elapsed);
+                }
+
+                this.ticks += elapsed;
             }
-
-            if ( !this.game.handle(event) )
-            {
-                logSDLError("Error handling event");
-                return 1;
-            }
-
-            this.game.step();
-            this.game.render();
-            SDL.GL.swapWindow(this.win);
-
-            auto elapsed = this.elapsedTicks();
-
-            if ( elapsed < 1000 / FPS )
-            {
-                SDL.delay(1000 / FPS - elapsed);
-            }
-
-            this.ticks += elapsed;
         }
         catch ( Exception e )
         {
@@ -238,6 +243,9 @@ public class SDLApp
         SDL.GL.setSwapInterval(1);
 
         GL.clearColor(0.0, 0.0, 0.0, 0.0);
+        GL.enable(GL.TEXTURE_2D);
+        GL.enable(GL.BLEND);
+        GL.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
         GL.matrixMode(GL.PROJECTION);
         GL.loadIdentity();
         GL.ortho(0.0, this.width, this.height, 1.0, -1.0, 1.0);

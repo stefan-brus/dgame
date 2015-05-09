@@ -7,6 +7,7 @@
 module util.SDL;
 
 import derelict.opengl3.gl; // This module is needed because reload() needs to be called after the context is created
+import derelict.sdl2.image;
 import derelict.sdl2.sdl;
 
 import std.conv;
@@ -368,6 +369,7 @@ public struct SDL
         if ( !initialized )
         {
             DerelictSDL2.load();
+            DerelictSDL2Image.load();
             return initialized = SDL_Init(SDL_INIT_VIDEO) == 0;
         }
 
@@ -399,6 +401,27 @@ public struct SDL
         }
 
         return true;
+    }
+
+    /**
+     * Load the image at the given path into an SDL surface
+     *
+     * Params:
+     *      path = The path to the image
+     *
+     * Returns:
+     *      The SDL surface containing the image
+     */
+
+    public static Surface imgLoad ( string path )
+    {
+        Surface result;
+
+        auto sdl_surface = IMG_Load(toStringz(path));
+
+        result(sdl_surface);
+
+        return result;
     }
 
     /**

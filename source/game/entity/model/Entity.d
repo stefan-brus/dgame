@@ -82,7 +82,7 @@ public abstract class Entity
      *
      * Params:
      *      w = The width to check against
-     *      w = The height to check against
+     *      h = The height to check against
      *
      * Returns:
      *      A set of directions based on the given boundaries

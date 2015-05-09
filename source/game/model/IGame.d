@@ -18,6 +18,12 @@ import util.SDL;
 public interface IGame
 {
     /**
+     * Initialize the game
+     */
+
+    void init ( );
+
+    /**
      * Render the world
      */
 

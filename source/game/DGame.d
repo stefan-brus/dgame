@@ -7,7 +7,7 @@
 module game.DGame;
 
 import game.entity.model.Direction;
-import game.entity.model.Entity;
+import game.entity.Player;
 import game.model.IGame;
 
 import util.GL;
@@ -27,31 +27,10 @@ public class DGame : IGame
     private int height;
 
     /**
-     * The player triangle entity
+     * The player entity
      */
 
-    private class Triangle : Entity
-    {
-        public this ( )
-        {
-            super(200, 100, 200, 100);
-            this.speed = 2.0;
-        }
-
-        override public void draw ( )
-        {
-            GL.begin(GL.TRIANGLES);
-            GL.color3ub(0xFF, 0x00, 0x00);
-            GL.vertex2f(this.x + (this.width / 2), this.y);
-            GL.color3ub(0x00, 0xFF, 0x00);
-            GL.vertex2f(this.x + this.width, this.y + this.height);
-            GL.color3ub(0x00, 0x00, 0xFF);
-            GL.vertex2f(this.x, this.y + this.height);
-            GL.end();
-        }
-    }
-
-    private Triangle player;
+    private Player player;
 
     /**
      * Constructor
@@ -65,8 +44,15 @@ public class DGame : IGame
     {
         this.width = width;
         this.height = height;
+    }
 
-        this.player = new Triangle();
+    /**
+     * Initialize the game
+     */
+
+    public void init ( )
+    {
+        this.player = new Player();
     }
 
     /**
