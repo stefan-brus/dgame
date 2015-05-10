@@ -243,7 +243,6 @@ public class SDLApp
         SDL.GL.setSwapInterval(1);
 
         GL.clearColor(0.0, 0.0, 0.0, 0.0);
-        GL.enable(GL.TEXTURE_2D);
         GL.enable(GL.BLEND);
         GL.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
         GL.matrixMode(GL.PROJECTION);

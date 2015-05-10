@@ -47,6 +47,7 @@ public abstract class SpriteEntity : Entity
 
     override public void draw ( )
     {
+        GL.enable(GL.TEXTURE_2D);
         GL.bindTexture(this.texture);
         GL.begin(GL.QUADS);
         GL.texCoord2i(0, 0);
@@ -58,6 +59,7 @@ public abstract class SpriteEntity : Entity
         GL.texCoord2i(0, 1);
         GL.vertex2f(this.x, this.y + this.height);
         GL.end();
+        GL.disable(GL.TEXTURE_2D);
     }
 
     /**

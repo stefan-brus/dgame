@@ -56,6 +56,18 @@ public struct GL
     }
 
     /**
+     * Disable an OpenGL capability
+     *
+     * Params:
+     *      cap = The capability
+     */
+
+    public static void disable ( int cap )
+    {
+        glDisable(cap);
+    }
+
+    /**
      * Set the clear color
      *
      * Params:
