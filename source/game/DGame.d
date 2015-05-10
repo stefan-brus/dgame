@@ -8,6 +8,7 @@ module game.DGame;
 
 import game.entity.model.Direction;
 import game.entity.Player;
+import game.entity.StarGenerator;
 import game.model.IGame;
 
 import util.GL;
@@ -33,6 +34,12 @@ public class DGame : IGame
     private Player player;
 
     /**
+     * The background star generator
+     */
+
+    private StarGenerator stars;
+
+    /**
      * Constructor
      *
      * Params:
@@ -53,6 +60,7 @@ public class DGame : IGame
     public void init ( )
     {
         this.player = new Player();
+        this.stars = new StarGenerator(this.width, this.height);
     }
 
     /**
@@ -63,6 +71,7 @@ public class DGame : IGame
     {
         GL.clear(GL.COLOR_BUFFER_BIT);
 
+        this.stars.draw();
         this.player.draw();
 
         GL.flush();
@@ -109,5 +118,7 @@ public class DGame : IGame
         this.player.dir = intersectDirs(this.player.dir, bound_dirs);
 
         this.player.move();
+
+        this.stars.update();
     }
 }

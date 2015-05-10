@@ -78,6 +78,20 @@ public abstract class Entity
     }
 
     /**
+     * Set the position of this entity
+     *
+     * Params:
+     *      x = The new x position
+     *      y = The new y position
+     */
+
+    public void setPos ( float x, float y )
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
      * Get the directions this entity can move in based on the given boundaries
      *
      * Params:
