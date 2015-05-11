@@ -34,11 +34,26 @@ public abstract class Generator ( T : Entity )
     protected T[] active;
 
     /**
-     * Constructor
+     * The dimensions of the game world, used to check when stars
+     * go out of bounds and should be recycled
      */
 
-    public this ( )
+    protected int width;
+    protected int height;
+
+    /**
+     * Constructor
+     *
+     * Params:
+     *      width = The game world width
+     *      height = The game world height
+     */
+
+    public this ( int width, int height )
     {
+        this.width = width;
+        this.height = height;
+
         this.pool = new ObjectPool!T();
     }
 

@@ -29,14 +29,6 @@ public class StarGenerator : Generator!Star
     private static enum INIT_STARS = 100;
 
     /**
-     * The dimensions of the game world, used to check when stars
-     * go out of bounds and should be recycled
-     */
-
-    private int width;
-    private int height;
-
-    /**
      * Constructor
      *
      * Params:
@@ -46,9 +38,7 @@ public class StarGenerator : Generator!Star
 
     public this ( int width, int height )
     {
-        super();
-        this.width = width;
-        this.height = height;
+        super(width, height);
 
         this.generateInitStars();
     }
@@ -91,7 +81,7 @@ public class StarGenerator : Generator!Star
     }
 
     /**
-     * Draw the currently acive stars
+     * Draw the currently active stars
      */
 
     override public void draw ( )

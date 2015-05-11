@@ -173,6 +173,7 @@ public struct SDL
         public static enum SCAN_A = SDL_SCANCODE_A;
         public static enum SCAN_S = SDL_SCANCODE_S;
         public static enum SCAN_D = SDL_SCANCODE_D;
+        public static enum SCAN_SPACE = SDL_SCANCODE_SPACE;
 
         /**
          * The SDL_Event pointer

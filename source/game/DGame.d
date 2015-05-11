@@ -59,7 +59,7 @@ public class DGame : IGame
 
     public void init ( )
     {
-        this.player = new Player();
+        this.player = new Player(this.width, this.height);
         this.stars = new StarGenerator(this.width, this.height);
     }
 
@@ -104,6 +104,8 @@ public class DGame : IGame
             this.player.dir[RIGHT] = key_state[SDL.Event.SCAN_D] > 0;
         }
 
+        this.player.is_shooting = key_state[SDL.Event.SCAN_SPACE] > 0;
+
         return true;
     }
 
@@ -121,6 +123,7 @@ public class DGame : IGame
         this.player.dir = intersectDirs(this.player.dir, bound_dirs);
 
         this.player.move(ms);
+        this.player.shoot(ms);
 
         this.stars.update(ms);
     }

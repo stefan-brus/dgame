@@ -4,7 +4,10 @@
 
 module game.entity.Player;
 
+import game.entity.model.Direction;
 import game.entity.model.SpriteEntity;
+import game.entity.ShotGenerator;
+import game.entity.PlasmaShot;
 
 /**
  * Player entity class
@@ -19,13 +22,58 @@ public class Player : SpriteEntity
     public static const IMG_PATH = "res/player.png";
 
     /**
-     * Constructor
+     * Whether or not the player is shooting
      */
 
-    public this ( )
+    public bool is_shooting;
+
+    /**
+     * The shot generator
+     */
+
+    private ShotGenerator!PlasmaShot shots;
+
+    /**
+     * Constructor
+     *
+     * Params:
+     *      width = The game world width
+     *      height = The game world height
+     */
+
+    public this ( int width, int height )
     {
         super(IMG_PATH, 200, 200, 64, 64);
 
         this.speed = 4.0;
+        this.shots = new ShotGenerator!PlasmaShot(width, height, 5, DIR_UP);
+    }
+
+    /**
+     * Override the draw function to draw the shots first
+     */
+
+    override public void draw ( )
+    {
+        this.shots.draw();
+
+        super.draw();
+    }
+
+    /**
+     * Check whether to fire a shot, and update the shot generator
+     *
+     * Params:
+     *      ms = The number of elapsed milliseconds since the last shot
+     */
+
+    public void shoot ( uint ms )
+    {
+        if ( this.is_shooting )
+        {
+            this.shots.shoot(this.x + (this.width / 2), this.y);
+        }
+
+        this.shots.update(ms);
     }
 }
