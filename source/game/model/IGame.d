@@ -43,7 +43,10 @@ public interface IGame
 
     /**
      * Update the world
+     *
+     * Params:
+     *      ms = The number of elapsed milliseconds since the last step
      */
 
-     void step ( );
+     void step ( uint ms );
 }

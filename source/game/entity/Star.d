@@ -24,7 +24,7 @@ public class Star : Entity
     {
         super(0, 0, 2, 2);
 
-        this.speed = 0.1;
+        this.speed = 0.2;
     }
 
     /**

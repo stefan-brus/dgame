@@ -26,6 +26,6 @@ public class Player : SpriteEntity
     {
         super(IMG_PATH, 200, 200, 64, 64);
 
-        this.speed = 2.0;
+        this.speed = 4.0;
     }
 }

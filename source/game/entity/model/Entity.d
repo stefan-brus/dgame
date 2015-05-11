@@ -5,6 +5,7 @@
 module game.entity.model.Entity;
 
 import game.entity.model.Direction;
+import game.Config;
 
 /**
  * Entity base class
@@ -64,16 +65,21 @@ public abstract class Entity
 
     /**
      * Move the entity according to its speed and directions
+     *
+     * Params:
+     *      ms = The number of elapsed milliseconds since the last move
      */
 
-    public void move ( )
+    public void move ( uint ms )
     {
+        auto distance = this.speed * ms / Config.MS_PER_FRAME;
+
         with ( Direction )
         {
-            this.y -= this.dir[UP] ? this.speed : 0;
-            this.x -= this.dir[LEFT] ? this.speed : 0;
-            this.y += this.dir[DOWN] ? this.speed : 0;
-            this.x += this.dir[RIGHT] ? this.speed : 0;
+            this.y -= this.dir[UP] ? distance : 0;
+            this.x -= this.dir[LEFT] ? distance : 0;
+            this.y += this.dir[DOWN] ? distance : 0;
+            this.x += this.dir[RIGHT] ? distance : 0;
         }
     }
 

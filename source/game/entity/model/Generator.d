@@ -44,9 +44,12 @@ public abstract class Generator ( T : Entity )
 
     /**
      * Override this, update the active entities
+     *
+     * Params:
+     *      ms = The number of elapsed milliseconds since the last update
      */
 
-    public abstract void update ( );
+    public abstract void update ( uint ms );
 
     /**
      * Override this, draw the active entities

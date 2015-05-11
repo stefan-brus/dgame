@@ -109,16 +109,19 @@ public class DGame : IGame
 
     /**
      * Update the world
+     *
+     * Params:
+     *      ms = The number of elapsed milliseconds since the last step
      */
 
-    public void step ( )
+    public void step ( uint ms )
     {
         // Move in the player's directions, minus any boundaries that may be touching
         auto bound_dirs = this.player.getBoundaries(this.width, this.height);
         this.player.dir = intersectDirs(this.player.dir, bound_dirs);
 
-        this.player.move();
+        this.player.move(ms);
 
-        this.stars.update();
+        this.stars.update(ms);
     }
 }

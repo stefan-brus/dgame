@@ -55,9 +55,12 @@ public class StarGenerator : Generator!Star
 
     /**
      * Randomly generate new stars, and move the active ones
+     *
+     * Params:
+     *      ms = The number of elapsed milliseconds since the last update
      */
 
-    override public void update ( )
+    override public void update ( uint ms )
     {
         if ( uniform(1, 100) <= FREQUENCY )
         {
@@ -73,7 +76,7 @@ public class StarGenerator : Generator!Star
         // For save recycling
         foreach_reverse ( i, star; this.active )
         {
-            star.move();
+            star.move(ms);
 
             if ( still(intersectDirs(star.getBoundaries(this.width, this.height), DIR_DOWN)) )
             {

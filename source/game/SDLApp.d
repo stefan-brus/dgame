@@ -5,6 +5,7 @@
 module game.SDLApp;
 
 import game.model.IGame;
+import game.Config;
 
 import util.GL;
 import util.SDL;
@@ -17,12 +18,6 @@ import std.stdio;
 
 public class SDLApp
 {
-    /**
-     * Frames per second
-     */
-
-    private enum FPS = 75;
-
     /**
      * The SDL window
      */
@@ -199,15 +194,15 @@ public class SDLApp
                     return 1;
                 }
 
-                this.game.step();
                 this.game.render();
                 SDL.GL.swapWindow(this.win);
 
                 auto elapsed = this.elapsedTicks();
+                this.game.step(elapsed);
 
-                if ( elapsed < 1000 / FPS )
+                if ( elapsed < Config.MS_PER_FRAME )
                 {
-                    SDL.delay(1000 / FPS - elapsed);
+                    SDL.delay(Config.MS_PER_FRAME - elapsed);
                 }
 
                 this.ticks += elapsed;
