@@ -183,6 +183,21 @@ public struct GL
     }
 
     /**
+     * Set the current color
+     *
+     * Params:
+     *      r = red
+     *      g = green
+     *      b = blue
+     *      a = alpha
+     */
+
+    public static void color4ub ( ubyte r, ubyte g, ubyte b, ubyte a )
+    {
+        glColor4ub(r, g, b, a);
+    }
+
+    /**
      * Translate the current matrix along (x, y)
      *
      * Params:

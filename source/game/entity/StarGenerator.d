@@ -54,10 +54,8 @@ public class StarGenerator : Generator!Star
     {
         if ( uniform(1, 100) <= FREQUENCY )
         {
-            auto star = this.generate();
             auto start_x = uniform(0, this.width);
-            star.setPos(start_x, 0);
-            star.dir = DIR_DOWN;
+            this.createAt(start_x, 0);
         }
 
         size_t[] to_remove;
@@ -102,13 +100,29 @@ public class StarGenerator : Generator!Star
 
         while ( i < INIT_STARS )
         {
-            auto star = this.generate();
             auto x = uniform(0, this.width);
             auto y = uniform(0, this.height);
-            star.setPos(x, y);
-            star.dir = DIR_DOWN;
+
+            this.createAt(x, y);
 
             i++;
         }
+    }
+
+    /**
+     * Create a star at the given coordinates
+     *
+     * Params:
+     *      x = The x position
+     *      y = The y position
+     */
+
+    private void createAt ( float x, float y )
+    {
+        auto star = this.generate();
+        star.setPos(x, y);
+        star.generateColor();
+        star.generateSpeed();
+        star.dir = DIR_DOWN;
     }
 }
