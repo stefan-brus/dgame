@@ -299,6 +299,19 @@ public struct GL
     }
 
     /**
+     * Set the current texture coordinates
+     *
+     * Params:
+     *      s = The s texture coordinate
+     *      t = The t texture coordinate
+     */
+
+    public static void texCoord2f ( float s, float t )
+    {
+        glTexCoord2f(s, t);
+    }
+
+    /**
      * Specify how to blend pixels
      *
      * Params:

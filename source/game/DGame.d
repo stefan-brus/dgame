@@ -7,7 +7,9 @@
 module game.DGame;
 
 import game.entity.model.Direction;
+import game.entity.EnemyGenerator;
 import game.entity.Player;
+import game.entity.SpaceBug;
 import game.entity.StarGenerator;
 import game.model.IGame;
 
@@ -40,6 +42,14 @@ public class DGame : IGame
     private StarGenerator stars;
 
     /**
+     * Space bug generator
+     */
+
+    private alias EnemyGenerator!SpaceBug BugGenerator;
+
+    private BugGenerator bugs;
+
+    /**
      * Constructor
      *
      * Params:
@@ -61,6 +71,7 @@ public class DGame : IGame
     {
         this.player = new Player(this.width, this.height);
         this.stars = new StarGenerator(this.width, this.height);
+        this.bugs = new BugGenerator(this.width, this.height, 0.5, DIR_DOWN);
     }
 
     /**
@@ -72,6 +83,7 @@ public class DGame : IGame
         GL.clear(GL.COLOR_BUFFER_BIT);
 
         this.stars.draw();
+        this.bugs.draw();
         this.player.draw();
 
         GL.flush();
@@ -126,5 +138,6 @@ public class DGame : IGame
         this.player.shoot(ms);
 
         this.stars.update(ms);
+        this.bugs.update(ms);
     }
 }

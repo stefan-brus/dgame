@@ -19,7 +19,7 @@ public class Player : SpriteEntity
      * The path to the sprite image
      */
 
-    public static const IMG_PATH = "res/player.png";
+    public static enum IMG_PATH = "res/player.png";
 
     /**
      * Whether or not the player is shooting
