@@ -66,7 +66,7 @@ public class StarGenerator : Generator!Star
         {
             star.move(ms);
 
-            if ( still(intersectDirs(star.getBoundaries(this.width, this.height), DIR_DOWN)) )
+            if ( star.outOfBounds(this.width, this.height) )
             {
                 to_remove ~= i;
             }
