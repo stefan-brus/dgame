@@ -24,8 +24,8 @@ public abstract class Entity
      * The size of the entity
      */
 
-    protected float width;
-    protected float height;
+    public float width;
+    public float height;
 
     /**
      * The entity's speed

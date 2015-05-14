@@ -68,8 +68,8 @@ public class EnemyGenerator ( T : Entity ) : Generator!T
 
         if ( this.elapsed >= 1000 / this.frequency )
         {
-            auto start_x = uniform(0, this.width);
             auto enemy = this.generate();
+            auto start_x = uniform(0, this.width - enemy.width);
             enemy.setPos(start_x, 0);
             enemy.dir = DIR_DOWN;
 
