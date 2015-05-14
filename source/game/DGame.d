@@ -72,7 +72,7 @@ public class DGame : IGame
     {
         this.player = new Player(this.width, this.height);
         this.stars = new StarGenerator(this.width, this.height);
-        this.bugs = new BugGenerator(this.width, this.height, 0.5, DIR_DOWN);
+        this.bugs = new BugGenerator(this.width, this.height, 1, DIR_DOWN);
     }
 
     /**
