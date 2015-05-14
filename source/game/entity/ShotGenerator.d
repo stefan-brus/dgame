@@ -111,7 +111,15 @@ public class ShotGenerator ( T : Entity ) : Generator!T
             auto shot = this.generate();
             shot.setPos(x, y);
             shot.dir = this.dir;
-            this.elapsed = 0;
         }
+    }
+
+    /**
+     * Reset the generator state
+     */
+
+    public void reset ( )
+    {
+        this.elapsed = this.elapsed >= 1000 / this.rof ? 0 : this.elapsed;
     }
 }

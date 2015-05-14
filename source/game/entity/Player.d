@@ -84,7 +84,9 @@ public class Player : SpriteEntity
     {
         if ( this.is_shooting )
         {
-            this.shots.shoot(this.x + (this.width / 2), this.y);
+            this.shots.shoot(this.x + 5, this.y);
+            this.shots.shoot(this.x + this.width - 8, this.y);
+            this.shots.reset();
         }
 
         this.shots.update(ms);
