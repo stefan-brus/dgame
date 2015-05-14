@@ -5,6 +5,7 @@
 module game.entity.Player;
 
 import game.entity.model.Direction;
+import game.entity.model.Entity;
 import game.entity.model.SpriteEntity;
 import game.entity.ShotGenerator;
 import game.entity.PlasmaShot;
@@ -31,7 +32,7 @@ public class Player : SpriteEntity
      * The shot generator
      */
 
-    private ShotGenerator!PlasmaShot shots;
+    public ShotGenerator!PlasmaShot shots;
 
     /**
      * Constructor
@@ -58,6 +59,18 @@ public class Player : SpriteEntity
         this.shots.draw();
 
         super.draw();
+    }
+
+    /**
+     * Override the collide function, do nothing for now
+     *
+     * Params:
+     *      other = unused
+     */
+
+    override public void collide ( Entity other )
+    {
+
     }
 
     /**

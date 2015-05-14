@@ -25,6 +25,7 @@ public class PlasmaShot : Entity
         super(0, 0, 5, 5);
 
         this.speed = 8.0;
+        this.type = this.type.SHOT;
     }
 
     /**
@@ -41,5 +42,20 @@ public class PlasmaShot : Entity
         GL.vertex2f(this.x, this.y + this.height);
         GL.color3ub(0xFF, 0xFF, 0xFF);
         GL.end();
+    }
+
+    /**
+     * Collide with an entity, kill this entity if other is an enemy
+     *
+     * Params:
+     *       other = The other entity
+     */
+
+    override public void collide ( Entity other )
+    {
+        if ( other.type == other.type.ENEMY )
+        {
+            this.kill();
+        }
     }
 }

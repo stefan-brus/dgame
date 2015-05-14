@@ -7,6 +7,7 @@
 module game.DGame;
 
 import game.entity.model.Direction;
+import game.entity.model.Entity;
 import game.entity.EnemyGenerator;
 import game.entity.Player;
 import game.entity.SpaceBug;
@@ -139,5 +140,7 @@ public class DGame : IGame
 
         this.stars.update(ms);
         this.bugs.update(ms);
+
+        Entity.checkCollisions(this.player.shots.active, this.bugs.active);
     }
 }

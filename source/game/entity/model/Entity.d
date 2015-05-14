@@ -14,6 +14,18 @@ import game.Config;
 public abstract class Entity
 {
     /**
+     * What kind of entity this is
+     */
+
+    public enum Type {
+        BACKGROUND, // Background entity, default value
+        ENEMY,      // Enemy entity
+        SHOT        // Shot entity
+    }
+
+    public Type type;
+
+    /**
      * The coordinates of the entity's upper left corner
      */
 
@@ -62,6 +74,15 @@ public abstract class Entity
      */
 
     public abstract void draw ( );
+
+    /**
+     * Override this, collide with another entity
+     *
+     * Params:
+     *      other = The other entity
+     */
+
+    public abstract void collide ( Entity other );
 
     /**
      * Move the entity according to its speed and directions
@@ -126,5 +147,98 @@ public abstract class Entity
         }
 
         return dirs;
+    }
+
+    /**
+     * Check if this entity is out of bounds
+     *
+     * Params:
+     *      w = The width to check against
+     *      h = The height to check against
+     *
+     * Returns:
+     *      True if this entity is out of bounds
+     */
+
+    public bool outOfBounds ( int w, int h )
+    {
+        auto x1 = this.x, x2 = this.x + this.width,
+             y1 = this.y, y2 = this.y + this.height;
+
+        return x1 > w || x2 < 0 || y1 > h || y2 < 0;
+    }
+
+    /**
+     * Collision check every entity in the given arrays
+     *
+     * Template params:
+     *      T1 = The type of the first entities
+     *      T2 = The type of the second entities
+     *
+     * Params:
+     *      es1 = The first entity array
+     *      es2 = The second entity array
+     */
+
+    public static void checkCollisions ( T1 : Entity, T2 : Entity ) ( T1[] es1, T2[] es2 )
+    {
+        foreach ( e1; es1 )
+        {
+            foreach ( e2; es2 )
+            {
+                if ( e1.checkCollision(e2) )
+                {
+                    e1.collide(e2);
+                    e2.collide(e1);
+                }
+            }
+        }
+    }
+
+    /**
+     * Kill this entity
+     *
+     * For now, sends it off screen based on its direction
+     */
+
+    protected void kill ( )
+    {
+        with ( Direction )
+        {
+            enum OFFSET = 10000;
+
+            this.y += this.dir[UP] ? OFFSET : 0;
+            this.x -= this.dir[LEFT] ? OFFSET : 0;
+            this.y -= this.dir[DOWN] ? OFFSET : 0;
+            this.x += this.dir[RIGHT] ? OFFSET : 0;
+        }
+    }
+
+    /**
+     * Check if this entity and the given one collide (rectangles overlap)
+     *
+     * Params:
+     *      other = The other entity
+     *
+     * Returns:
+     *      True if rectangles overlap
+     */
+
+    private bool checkCollision ( Entity other )
+    {
+        auto r1_x1 = this.x, r1_x2 = this.x + this.width,
+             r1_y1 = this.y, r1_y2 = this.y + this.height,
+             r2_x1 = other.x, r2_x2 = other.x + other.width,
+             r2_y1 = other.y, r2_y2 = other.y + other.height;
+
+        if ( r1_x1 > r2_x2 || r1_x2 < r2_x1 ||
+             r1_y1 > r2_y2 || r1_y2 < r2_y1 )
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

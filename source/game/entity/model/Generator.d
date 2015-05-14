@@ -31,7 +31,7 @@ public abstract class Generator ( T : Entity )
      * References to currently active entities
      */
 
-    protected T[] active;
+    public T[] active;
 
     /**
      * The dimensions of the game world, used to check when stars

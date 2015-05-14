@@ -84,7 +84,7 @@ public class EnemyGenerator ( T : Entity ) : Generator!T
         {
             enemy.move(ms);
 
-            if ( still(intersectDirs(enemy.getBoundaries(this.width, this.height), enemy.dir)) )
+            if ( enemy.outOfBounds(this.width, this.height) )
             {
                 to_remove ~= i;
             }

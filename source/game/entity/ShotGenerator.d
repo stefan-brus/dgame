@@ -72,7 +72,7 @@ public class ShotGenerator ( T : Entity ) : Generator!T
         {
             shot.move(ms);
 
-            if ( still(intersectDirs(shot.getBoundaries(this.width, this.height), this.dir)) )
+            if ( shot.outOfBounds(this.width, this.height) )
             {
                 to_remove ~= i;
             }

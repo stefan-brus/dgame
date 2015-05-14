@@ -35,6 +35,20 @@ public enum Directions DIR_DOWN = [
     Direction.RIGHT: false
 ];
 
+public enum Directions DIR_LEFT = [
+    Direction.UP: false,
+    Direction.LEFT: true,
+    Direction.DOWN: false,
+    Direction.RIGHT: false
+];
+
+public enum Directions DIR_RIGHT = [
+    Direction.UP: false,
+    Direction.LEFT: false,
+    Direction.DOWN: false,
+    Direction.RIGHT: true
+];
+
 /**
  * Helper function to get the intersection of 2 sets of directions
  *

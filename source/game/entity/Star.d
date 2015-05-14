@@ -58,6 +58,18 @@ public class Star : Entity
     }
 
     /**
+     * Collide with an entity, do nothing
+     *
+     * Params:
+     *      other = unused
+     */
+
+    override public void collide ( Entity other )
+    {
+
+    }
+
+    /**
      * Generate a new color
      */
 
