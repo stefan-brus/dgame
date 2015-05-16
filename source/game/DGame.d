@@ -6,14 +6,9 @@
 
 module game.DGame;
 
-import game.entity.model.Direction;
-import game.entity.model.Entity;
 import game.entity.model.SpriteEntity;
-import game.entity.EnemyGenerator;
-import game.entity.Player;
-import game.entity.SpaceBug;
-import game.entity.StarGenerator;
 import game.model.IGame;
+import game.state.GameState;
 
 import util.GL;
 import util.SDL;
@@ -41,24 +36,10 @@ public class DGame : IGame
     private int height;
 
     /**
-     * The player entity
+     * The game state
      */
 
-    private Player player;
-
-    /**
-     * The background star generator
-     */
-
-    private StarGenerator stars;
-
-    /**
-     * Space bug generator
-     */
-
-    private alias EnemyGenerator!SpaceBug BugGenerator;
-
-    private BugGenerator bugs;
+    private GameState state;
 
     /**
      * Constructor
@@ -72,6 +53,8 @@ public class DGame : IGame
     {
         this.width = width;
         this.height = height;
+
+        this.state = new GameState(this.width, this.height);
     }
 
     /**
@@ -82,9 +65,7 @@ public class DGame : IGame
     {
         SpriteEntity.initSprites(SPRITE_PATHS);
 
-        this.player = new Player(this.width, this.height);
-        this.stars = new StarGenerator(this.width, this.height);
-        this.bugs = new BugGenerator(this.width, this.height, 1, DIR_DOWN);
+        this.state.init();
     }
 
     /**
@@ -95,9 +76,7 @@ public class DGame : IGame
     {
         GL.clear(GL.COLOR_BUFFER_BIT);
 
-        this.stars.draw();
-        this.bugs.draw();
-        this.player.draw();
+        this.state.render();
 
         GL.flush();
     }
@@ -114,24 +93,7 @@ public class DGame : IGame
 
     override public bool handle ( SDL.Event event )
     {
-        auto key_state = SDL.getKeyboardState();
-
-        if ( key_state is null )
-        {
-            return false;
-        }
-
-        with ( Direction )
-        {
-            this.player.dir[UP] = key_state[SDL.Event.SCAN_W] > 0;
-            this.player.dir[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
-            this.player.dir[DOWN] = key_state[SDL.Event.SCAN_S] > 0;
-            this.player.dir[RIGHT] = key_state[SDL.Event.SCAN_D] > 0;
-        }
-
-        this.player.is_shooting = key_state[SDL.Event.SCAN_SPACE] > 0;
-
-        return true;
+        return this.state.handle(event);
     }
 
     /**
@@ -143,16 +105,6 @@ public class DGame : IGame
 
     override public void step ( uint ms )
     {
-        // Move in the player's directions, minus any boundaries that may be touching
-        auto bound_dirs = this.player.getBoundaries(this.width, this.height);
-        this.player.dir = intersectDirs(this.player.dir, bound_dirs);
-
-        this.player.move(ms);
-        this.player.shoot(ms);
-
-        this.stars.update(ms);
-        this.bugs.update(ms);
-
-        Entity.checkCollisions(this.player.shots.active, this.bugs.active);
+        this.state.step(ms);
     }
 }
