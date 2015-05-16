@@ -8,6 +8,7 @@ module game.DGame;
 
 import game.entity.model.Direction;
 import game.entity.model.Entity;
+import game.entity.model.SpriteEntity;
 import game.entity.EnemyGenerator;
 import game.entity.Player;
 import game.entity.SpaceBug;
@@ -23,6 +24,15 @@ import util.SDL;
 
 public class DGame : IGame
 {
+    /**
+     * Paths to sprites used by the game
+     */
+
+    private static enum SPRITE_PATHS = [
+        "res/player.png",
+        "res/spacebug.png"
+    ];
+
     /**
      * The size of the game area in pixels
      */
@@ -70,6 +80,8 @@ public class DGame : IGame
 
     public void init ( )
     {
+        SpriteEntity.initSprites(SPRITE_PATHS);
+
         this.player = new Player(this.width, this.height);
         this.stars = new StarGenerator(this.width, this.height);
         this.bugs = new BugGenerator(this.width, this.height, 1, DIR_DOWN);

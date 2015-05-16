@@ -44,13 +44,21 @@ public abstract class SpriteEntity : Entity
     {
         super(x, y, width, height);
 
-        if ( path !in LOADED_TEXTURES )
+        this.texture = path in LOADED_TEXTURES ? LOADED_TEXTURES[path] : loadTexture(path);
+    }
+
+    /**
+     * Initialize sprites from the given paths
+     *
+     * Params:
+     *      paths = The paths to load sprites from
+     */
+
+    public static void initSprites ( string[] paths )
+    {
+        foreach ( path; paths )
         {
-            this.loadTexture(path);
-        }
-        else
-        {
-            this.texture = LOADED_TEXTURES[path];
+            LOADED_TEXTURES[path] = loadTexture(path);
         }
     }
 
@@ -83,9 +91,12 @@ public abstract class SpriteEntity : Entity
      *
      * Params:
      *      path = The path to the image
+     *
+     * Returns:
+     *      The texture handle
      */
 
-    private void loadTexture ( string path )
+    private static uint loadTexture ( string path )
     {
         auto surface = SDL.imgLoad(path);
         enforce(surface() !is null, "Failed to load image at " ~ path);
@@ -97,13 +108,15 @@ public abstract class SpriteEntity : Entity
         // Make sure image has an alpha channel
         enforce(surface().format.BytesPerPixel == 4, "Texture must have an alpha channel");
 
-        this.texture = GL.genTexture();
-        GL.bindTexture(this.texture);
+        auto handle = GL.genTexture();
+        GL.bindTexture(handle);
         GL.texParameteri(GL.TEXTURE_MIN_FILTER, GL.LINEAR);
         GL.texParameteri(GL.TEXTURE_MAG_FILTER, GL.LINEAR);
         GL.texImage2D(surface().w, surface().h, surface().pixels);
-        LOADED_TEXTURES[path] = this.texture;
+        LOADED_TEXTURES[path] = handle;
 
         SDL.Surface.freeSurface(surface);
+
+        return handle;
     }
 }
