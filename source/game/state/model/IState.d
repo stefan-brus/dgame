@@ -6,6 +6,8 @@
 
 module game.state.model.IState;
 
+import game.state.States;
+
 import util.SDL;
 
 /**
@@ -43,7 +45,8 @@ public interface IState
      *
      * Params:
      *      ms = The number of elapsed milliseconds since the last step
+     *      states = State manager reference
      */
 
-     void step ( uint ms );
+     void step ( uint ms, States states );
 }

@@ -11,6 +11,7 @@ import game.entity.Player;
 import game.entity.SpaceBug;
 import game.entity.StarGenerator;
 import game.state.model.IState;
+import game.state.States;
 
 import util.SDL;
 
@@ -20,6 +21,12 @@ import util.SDL;
 
 public class GameState : IState
 {
+    /**
+     * The key of this state
+     */
+
+    public static enum KEY = "STATE_GAME";
+
     /**
      * The size of the game area in pixels
      */
@@ -120,9 +127,10 @@ public class GameState : IState
      *
      * Params:
      *      ms = The number of elapsed milliseconds since the last step
+     *      states = State manager reference
      */
 
-    override public void step ( uint ms )
+    override public void step ( uint ms, States states )
     {
         // Move in the player's directions, minus any boundaries that may be touching
         auto bound_dirs = this.player.getBoundaries(this.width, this.height);

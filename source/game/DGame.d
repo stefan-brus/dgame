@@ -8,7 +8,10 @@ module game.DGame;
 
 import game.entity.model.SpriteEntity;
 import game.model.IGame;
+import game.state.model.IState;
 import game.state.GameState;
+import game.state.IntroState;
+import game.state.States;
 
 import util.GL;
 import util.SDL;
@@ -24,6 +27,7 @@ public class DGame : IGame
      */
 
     private static enum SPRITE_PATHS = [
+        "res/logo.png",
         "res/player.png",
         "res/spacebug.png"
     ];
@@ -36,10 +40,10 @@ public class DGame : IGame
     private int height;
 
     /**
-     * The game state
+     * The state manager
      */
 
-    private GameState state;
+    private States states;
 
     /**
      * Constructor
@@ -54,7 +58,11 @@ public class DGame : IGame
         this.width = width;
         this.height = height;
 
-        this.state = new GameState(this.width, this.height);
+        IState[string] init_states;
+        init_states[IntroState.KEY] = new IntroState();
+        init_states[GameState.KEY] = new GameState(this.width, this.height);
+
+        this.states = new States(init_states);
     }
 
     /**
@@ -65,7 +73,8 @@ public class DGame : IGame
     {
         SpriteEntity.initSprites(SPRITE_PATHS);
 
-        this.state.init();
+        this.states.init();
+        this.states.setState(IntroState.KEY);
     }
 
     /**
@@ -76,7 +85,7 @@ public class DGame : IGame
     {
         GL.clear(GL.COLOR_BUFFER_BIT);
 
-        this.state.render();
+        this.states().render();
 
         GL.flush();
     }
@@ -93,7 +102,7 @@ public class DGame : IGame
 
     override public bool handle ( SDL.Event event )
     {
-        return this.state.handle(event);
+        return this.states().handle(event);
     }
 
     /**
@@ -105,6 +114,6 @@ public class DGame : IGame
 
     override public void step ( uint ms )
     {
-        this.state.step(ms);
+        this.states().step(ms, this.states);
     }
 }
