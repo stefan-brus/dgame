@@ -7,6 +7,7 @@
 module game.DGame;
 
 import game.entity.model.SpriteEntity;
+import game.entity.StarGenerator;
 import game.model.IGame;
 import game.state.model.IState;
 import game.state.GameState;
@@ -46,6 +47,12 @@ public class DGame : IGame
     private States states;
 
     /**
+     * The background star generator
+     */
+
+    private StarGenerator stars;
+
+    /**
      * Constructor
      *
      * Params:
@@ -75,6 +82,8 @@ public class DGame : IGame
 
         this.states.init();
         this.states.setState(IntroState.KEY);
+
+        this.stars = new StarGenerator(this.width, this.height);
     }
 
     /**
@@ -85,6 +94,7 @@ public class DGame : IGame
     {
         GL.clear(GL.COLOR_BUFFER_BIT);
 
+        this.stars.draw();
         this.states().render();
 
         GL.flush();
@@ -114,6 +124,8 @@ public class DGame : IGame
 
     override public void step ( uint ms )
     {
+        this.stars.update(ms);
+
         this.states().step(ms, this.states);
     }
 }

@@ -9,7 +9,6 @@ import game.entity.model.Entity;
 import game.entity.EnemyGenerator;
 import game.entity.Player;
 import game.entity.SpaceBug;
-import game.entity.StarGenerator;
 import game.state.model.IState;
 import game.state.States;
 
@@ -41,12 +40,6 @@ public class GameState : IState
     private Player player;
 
     /**
-     * The background star generator
-     */
-
-    private StarGenerator stars;
-
-    /**
      * Space bug generator
      */
 
@@ -75,7 +68,6 @@ public class GameState : IState
     override public void init ( )
     {
         this.player = new Player(this.width, this.height);
-        this.stars = new StarGenerator(this.width, this.height);
         this.bugs = new BugGenerator(this.width, this.height, 1, DIR_DOWN);
     }
 
@@ -85,7 +77,6 @@ public class GameState : IState
 
     override public void render ( )
     {
-        this.stars.draw();
         this.bugs.draw();
         this.player.draw();
     }
@@ -139,7 +130,6 @@ public class GameState : IState
         this.player.move(ms);
         this.player.shoot(ms);
 
-        this.stars.update(ms);
         this.bugs.update(ms);
 
         Entity.checkCollisions(this.player.shots.active, this.bugs.active);
