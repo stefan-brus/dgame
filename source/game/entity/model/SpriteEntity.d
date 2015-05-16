@@ -18,6 +18,12 @@ import std.exception;
 public abstract class SpriteEntity : Entity
 {
     /**
+     * Texture handles to textures that have already been loaded
+     */
+
+    private static uint[string] LOADED_TEXTURES;
+
+    /**
      * The texture handle
      */
 
@@ -38,7 +44,14 @@ public abstract class SpriteEntity : Entity
     {
         super(x, y, width, height);
 
-        this.loadTexture(path);
+        if ( path !in LOADED_TEXTURES )
+        {
+            this.loadTexture(path);
+        }
+        else
+        {
+            this.texture = LOADED_TEXTURES[path];
+        }
     }
 
     /**
@@ -89,6 +102,7 @@ public abstract class SpriteEntity : Entity
         GL.texParameteri(GL.TEXTURE_MIN_FILTER, GL.LINEAR);
         GL.texParameteri(GL.TEXTURE_MAG_FILTER, GL.LINEAR);
         GL.texImage2D(surface().w, surface().h, surface().pixels);
+        LOADED_TEXTURES[path] = this.texture;
 
         SDL.Surface.freeSurface(surface);
     }
