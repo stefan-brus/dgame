@@ -78,7 +78,7 @@ public class DGame : IGame
      * Initialize the game
      */
 
-    public void init ( )
+    override public void init ( )
     {
         SpriteEntity.initSprites(SPRITE_PATHS);
 
@@ -91,7 +91,7 @@ public class DGame : IGame
      * Render the world
      */
 
-    public void render ( )
+    override public void render ( )
     {
         GL.clear(GL.COLOR_BUFFER_BIT);
 
@@ -112,7 +112,7 @@ public class DGame : IGame
      *      True on success
      */
 
-    public bool handle ( SDL.Event event )
+    override public bool handle ( SDL.Event event )
     {
         auto key_state = SDL.getKeyboardState();
 
@@ -141,7 +141,7 @@ public class DGame : IGame
      *      ms = The number of elapsed milliseconds since the last step
      */
 
-    public void step ( uint ms )
+    override public void step ( uint ms )
     {
         // Move in the player's directions, minus any boundaries that may be touching
         auto bound_dirs = this.player.getBoundaries(this.width, this.height);
