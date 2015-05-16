@@ -43,7 +43,7 @@ public class GameState : IState
      * Space bug generator
      */
 
-    private alias EnemyGenerator!SpaceBug BugGenerator;
+    private alias BugGenerator = EnemyGenerator!SpaceBug;
 
     private BugGenerator bugs;
 
