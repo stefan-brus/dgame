@@ -54,7 +54,7 @@ public class States
     }
 
     /**
-     * Set the current state to use
+     * Set the current state to use, and reset the one in use
      *
      * Params:
      *      state = The key of the state
@@ -62,6 +62,11 @@ public class States
 
     public void setState ( string state )
     {
+        if ( this.cur_state.length > 0 )
+        {
+            this.current().reset();
+        }
+
         this.cur_state = state;
     }
 

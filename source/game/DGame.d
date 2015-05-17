@@ -10,6 +10,7 @@ import game.entity.model.SpriteEntity;
 import game.entity.StarGenerator;
 import game.model.IGame;
 import game.state.model.IState;
+import game.state.EndState;
 import game.state.GameState;
 import game.state.IntroState;
 import game.state.States;
@@ -68,6 +69,7 @@ public class DGame : IGame
         IState[string] init_states;
         init_states[IntroState.KEY] = new IntroState();
         init_states[GameState.KEY] = new GameState(this.width, this.height);
+        init_states[EndState.KEY] = new EndState();
 
         this.states = new States(init_states);
     }

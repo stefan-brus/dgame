@@ -23,6 +23,12 @@ public interface IState
     void init ( );
 
     /**
+     * Reset the state
+     */
+
+    void reset ( );
+
+    /**
      * Render the state
      */
 

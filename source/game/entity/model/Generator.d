@@ -73,6 +73,18 @@ public abstract class Generator ( T : Entity )
     public abstract void draw ( );
 
     /**
+     * Recycle all entities
+     */
+
+    public void recycleAll ( )
+    {
+        foreach_reverse ( idx, _; this.active )
+        {
+            this.recycle(idx);
+        }
+    }
+
+    /**
      * Generate an entity and create a reference to it
      *
      * Returns:

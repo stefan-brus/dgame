@@ -10,6 +10,7 @@ import game.entity.EnemyGenerator;
 import game.entity.Player;
 import game.entity.SpaceBug;
 import game.state.model.IState;
+import game.state.EndState;
 import game.state.States;
 
 import util.SDL;
@@ -69,6 +70,17 @@ public class GameState : IState
     {
         this.player = new Player(this.width, this.height);
         this.bugs = new BugGenerator(this.width, this.height, 1, DIR_DOWN);
+    }
+
+    /**
+     * Reset the state
+     */
+
+    override public void reset ( )
+    {
+        this.player.setPos(200, 200);
+        this.player.shots.recycleAll();
+        this.bugs.recycleAll();
     }
 
     /**
@@ -132,6 +144,19 @@ public class GameState : IState
 
         this.bugs.update(ms);
 
+        void checkGameOver ( Entity e1, Entity e2 )
+        {
+            with ( Entity.Type )
+            {
+                if ( (e1.type == PLAYER && e2.type == ENEMY) ||
+                     (e1.type == ENEMY && e2.type == PLAYER) )
+                {
+                    states.setState(EndState.KEY);
+                }
+            }
+        }
+
         Entity.checkCollisions(this.player.shots.active, this.bugs.active);
+        Entity.checkCollisions([this.player], this.bugs.active, &checkGameOver);
     }
 }

@@ -19,6 +19,7 @@ public abstract class Entity
 
     public enum Type {
         BACKGROUND, // Background entity, default value
+        PLAYER,     // Player entity
         ENEMY,      // Enemy entity
         SHOT        // Shot entity
     }
@@ -178,9 +179,11 @@ public abstract class Entity
      * Params:
      *      es1 = The first entity array
      *      es2 = The second entity array
+     *      dg = Optional, the delegate function to call when a collision is detected
      */
 
-    public static void checkCollisions ( T1 : Entity, T2 : Entity ) ( T1[] es1, T2[] es2 )
+    alias CollideDg = void delegate ( Entity e1, Entity e2 );
+    public static void checkCollisions ( T1 : Entity, T2 : Entity ) ( T1[] es1, T2[] es2, CollideDg dg = null )
     {
         foreach ( e1; es1 )
         {
@@ -190,6 +193,11 @@ public abstract class Entity
                 {
                     e1.collide(e2);
                     e2.collide(e1);
+
+                    if ( dg !is null )
+                    {
+                        dg(e1, e2);
+                    }
                 }
             }
         }

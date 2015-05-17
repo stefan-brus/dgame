@@ -1,8 +1,8 @@
 /**
- * Intro state - displays the game logo
+ * Game over state
  */
 
-module game.state.IntroState;
+module game.state.EndState;
 
 import game.entity.model.Entity;
 import game.entity.model.SpriteEntity;
@@ -13,33 +13,33 @@ import game.state.States;
 import util.SDL;
 
 /**
- * Intro state class
+ * End state class
  */
 
-public class IntroState : IState
+public class EndState : IState
 {
     /**
      * The key of this state
      */
 
-    public static enum KEY = "STATE_INTRO";
+    public static enum KEY = "STATE_END";
 
     /**
-     * Logo sprite entity
+     * Game over message entity
      */
 
-    private class Logo : SpriteEntity
+    private class GameOver : SpriteEntity
     {
         this ( )
         {
-            enum PATH = "res/logo.png";
+            enum PATH = "res/gameover.png";
             super(PATH, 150, 150, 512, 256);
         }
 
         override public void collide ( Entity ) { }
     }
 
-    private Logo logo;
+    private GameOver game_over;
 
     /**
      * Whether or not the player has started the game
@@ -53,7 +53,7 @@ public class IntroState : IState
 
     override public void init ( )
     {
-        this.logo = new Logo();
+        this.game_over = new GameOver();
     }
 
     /**
@@ -71,7 +71,7 @@ public class IntroState : IState
 
     override public void render ( )
     {
-        this.logo.draw();
+        this.game_over.draw();
     }
 
     /**

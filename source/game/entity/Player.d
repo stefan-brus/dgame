@@ -47,6 +47,7 @@ public class Player : SpriteEntity
         super(IMG_PATH, 200, 200, 64, 64);
 
         this.speed = 4.0;
+        this.type = Entity.Type.PLAYER;
         this.shots = new ShotGenerator!PlasmaShot(width, height, 5, DIR_UP);
     }
 
