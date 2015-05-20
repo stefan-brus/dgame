@@ -359,6 +359,12 @@ public struct SDL
     public struct Mix
     {
         /**
+         * The maximum mixer volume
+         */
+
+        public static enum MAX_VOLUME = 128;
+
+        /**
          * SDL Mix_Chunk wrapper struct
          */
 
@@ -392,6 +398,39 @@ public struct SDL
         }
 
         /**
+         * SDL Mix_Music wrapper struct
+         */
+
+        public struct Music
+        {
+            /**
+             * The SDL Mix_chunk pointer
+             */
+
+            Mix_Music* mix_music;
+
+            /**
+             * opCall
+             *
+             * Params:
+             *      mix_music = If not null, sets mix_music to this pointer
+             *
+             * Returns:
+             *      The Mix_Music pointer
+             */
+
+            public Mix_Music* opCall ( Mix_Music* mix_music = null )
+            {
+                if ( mix_music !is null )
+                {
+                    this.mix_music = mix_music;
+                }
+
+                return this.mix_music;
+            }
+        }
+
+        /**
          * Load a WAV file
          *
          * Params:
@@ -413,6 +452,27 @@ public struct SDL
         }
 
         /**
+         * Load a music file
+         *
+         * Params:
+         *      path = The path to the file
+         *
+         * Returns:
+         *      The Mix.Music struct
+         */
+
+        public static Music loadMUS ( string path )
+        {
+            Music result;
+
+            auto mix_music = Mix_LoadMUS(toStringz(path));
+
+            result(mix_music);
+
+            return result;
+        }
+
+        /**
          * Play the given chunk
          *
          * Params:
@@ -425,6 +485,18 @@ public struct SDL
         }
 
         /**
+         * Play the give music
+         *
+         * Params:
+         *      music = The music to play
+         */
+
+        public static void playMusic ( Music music )
+        {
+            Mix_PlayMusic(music(), -1);
+        }
+
+        /**
          * Free the given chunk
          *
          * Params:
@@ -434,6 +506,37 @@ public struct SDL
         public static void freeChunk ( Chunk chunk )
         {
             Mix_FreeChunk(chunk());
+        }
+
+        /**
+         * Free the given music
+         *
+         * Params:
+         *      music = The music to free
+         */
+
+        public static void freeMusic ( Music music )
+        {
+            Mix_FreeMusic(music());
+        }
+
+        /**
+         * Set the music volume
+         *
+         * Must be a number between 0 and MAX_VOLUME
+         *
+         * Params:
+         *      volume = The volume
+         */
+
+        public static void volumeMusic ( int volume )
+        in
+        {
+            assert(volume >= 0 && volume <= 128);
+        }
+        body
+        {
+            Mix_VolumeMusic(volume);
         }
 
         /**

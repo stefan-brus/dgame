@@ -23,6 +23,18 @@ public class SoundLib
     public static enum SHOOT = "res/shoot.wav";
 
     /**
+     * Music library keys
+     */
+
+    public static enum MUSIC = "res/KoD-VideoGameMetal.mid";
+
+    /**
+     * The volume of the music
+     */
+
+    private static enum MUSIC_VOLUME = 30;
+
+    /**
      * Singleton instance
      */
 
@@ -33,6 +45,12 @@ public class SoundLib
      */
 
     private SDL.Mix.Chunk[string] sound_map;
+
+    /**
+     * Music map
+     */
+
+    private SDL.Mix.Music[string] music_map;
 
     /**
      * Constructor, private because singleton
@@ -46,6 +64,11 @@ public class SoundLib
         enforce(this.sound_map[HIT]() !is null);
         this.sound_map[SHOOT] = SDL.Mix.loadWAV(SHOOT);
         enforce(this.sound_map[SHOOT]() !is null);
+
+        this.music_map[MUSIC] = SDL.Mix.loadMUS(MUSIC);
+        enforce(this.music_map[MUSIC]() !is null);
+
+        SDL.Mix.volumeMusic(MUSIC_VOLUME);
     }
 
     /**
@@ -91,5 +114,22 @@ public class SoundLib
     body
     {
         SDL.Mix.playChannel(this.sound_map[sound]);
+    }
+
+    /**
+     * Start playing the given music
+     *
+     * Params:
+     *      music = The key of the music to play
+     */
+
+    public void startMusic ( string music )
+    in
+    {
+        assert(music in this.music_map);
+    }
+    body
+    {
+        SDL.Mix.playMusic(this.music_map[music]);
     }
 }

@@ -14,6 +14,7 @@ import game.state.EndState;
 import game.state.GameState;
 import game.state.IntroState;
 import game.state.States;
+import game.SoundLib;
 
 import util.GL;
 import util.SDL;
@@ -86,6 +87,8 @@ public class DGame : IGame
         this.states.setState(IntroState.KEY);
 
         this.stars = new StarGenerator(this.width, this.height);
+
+        SoundLib().startMusic(SoundLib.MUSIC);
     }
 
     /**
