@@ -468,6 +468,7 @@ public struct SDL
 
     public static void quit ( )
     {
+        IMG_Quit();
         SDL_Quit();
     }
 
