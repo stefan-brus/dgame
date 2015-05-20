@@ -8,6 +8,7 @@ module util.SDL;
 
 import derelict.opengl3.gl; // This module is needed because reload() needs to be called after the context is created
 import derelict.sdl2.image;
+import derelict.sdl2.mixer;
 import derelict.sdl2.sdl;
 
 import std.conv;
@@ -352,6 +353,103 @@ public struct SDL
     }
 
     /**
+     * SDL mixer wrapper struct
+     */
+
+    public struct Mix
+    {
+        /**
+         * SDL Mix_Chunk wrapper struct
+         */
+
+        public struct Chunk
+        {
+            /**
+             * The SDL Mix_chunk pointer
+             */
+
+            Mix_Chunk* mix_chunk;
+
+            /**
+             * opCall
+             *
+             * Params:
+             *      mix_chunk = If not null, sets mix_chunk to this pointer
+             *
+             * Returns:
+             *      The Mix_Chunk pointer
+             */
+
+            public Mix_Chunk* opCall ( Mix_Chunk* mix_chunk = null )
+            {
+                if ( mix_chunk !is null )
+                {
+                    this.mix_chunk = mix_chunk;
+                }
+
+                return this.mix_chunk;
+            }
+        }
+
+        /**
+         * Load a WAV file
+         *
+         * Params:
+         *      path = The path to the file
+         *
+         * Returns:
+         *      The Mix.Chunk struct
+         */
+
+        public static Chunk loadWAV ( string path )
+        {
+            Chunk result;
+
+            auto mix_chunk = Mix_LoadWAV(toStringz(path));
+
+            result(mix_chunk);
+
+            return result;
+        }
+
+        /**
+         * Play the given chunk
+         *
+         * Params:
+         *      chunk = The chunk to play
+         */
+
+        public static void playChannel ( Chunk chunk )
+        {
+            Mix_PlayChannel(-1, chunk(), 0);
+        }
+
+        /**
+         * Free the given chunk
+         *
+         * Params:
+         *      chunk = The chunk to free
+         */
+
+        public static void freeChunk ( Chunk chunk )
+        {
+            Mix_FreeChunk(chunk());
+        }
+
+        /**
+         * Get the SDL mixer error message
+         *
+         * Returns:
+         *      The SDL mixer error message
+         */
+
+        public static string getError ( )
+        {
+            return cast(string)fromStringz(Mix_GetError());
+        }
+    }
+
+    /**
      * Whether or not SDL/SDL GL has been initialized
      */
 
@@ -372,7 +470,9 @@ public struct SDL
         {
             DerelictSDL2.load();
             DerelictSDL2Image.load();
-            return initialized = SDL_Init(SDL_INIT_VIDEO) == 0;
+            DerelictSDL2Mixer.load();
+            initialized = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == 0;
+            return initialized &= SDL_Init(SDL_INIT_VIDEO) == 0;
         }
 
         return true;
@@ -469,6 +569,7 @@ public struct SDL
     public static void quit ( )
     {
         IMG_Quit();
+        Mix_Quit();
         SDL_Quit();
     }
 

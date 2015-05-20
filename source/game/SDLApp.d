@@ -211,6 +211,7 @@ public class SDLApp
         catch ( Exception e )
         {
             logSDLError("Exception caught in main loop: " ~ e.msg);
+            writefln("Thrown from %s: %d", e.file, e.line);
             return 1;
         }
 
@@ -256,5 +257,6 @@ public class SDLApp
     {
         writefln("Error: %s", msg);
         writefln("SDL Error: %s", SDL.error());
+        writefln("SDL Mixer Error: %s", SDL.Mix.getError());
     }
 }

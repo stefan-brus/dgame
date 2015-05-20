@@ -7,6 +7,7 @@ module game.entity.ShotGenerator;
 import game.entity.model.Direction;
 import game.entity.model.Entity;
 import game.entity.model.Generator;
+import game.SoundLib;
 
 /**
  * Shot generator class
@@ -111,6 +112,7 @@ public class ShotGenerator ( T : Entity ) : Generator!T
             auto shot = this.generate();
             shot.setPos(x, y);
             shot.dir = this.dir;
+            SoundLib().play(SoundLib.SHOOT);
         }
     }
 

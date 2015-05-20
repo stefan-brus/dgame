@@ -12,6 +12,7 @@ import game.entity.SpaceBug;
 import game.state.model.IState;
 import game.state.EndState;
 import game.state.States;
+import game.SoundLib;
 
 import util.SDL;
 
@@ -152,6 +153,7 @@ public class GameState : IState
                      (e1.type == ENEMY && e2.type == PLAYER) )
                 {
                     states.setState(EndState.KEY);
+                    SoundLib().play(SoundLib.DEAD);
                 }
             }
         }
