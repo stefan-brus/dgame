@@ -7,6 +7,7 @@ module game.state.GameState;
 import game.entity.model.Direction;
 import game.entity.model.Entity;
 import game.entity.EnemyGenerator;
+import game.entity.HUD;
 import game.entity.Player;
 import game.entity.SpaceBug;
 import game.state.model.IState;
@@ -42,6 +43,12 @@ public class GameState : IState
     private Player player;
 
     /**
+     * Heads-up display
+     */
+
+    private HUD hud;
+
+    /**
      * Space bug generator
      */
 
@@ -71,6 +78,7 @@ public class GameState : IState
     {
         this.player = new Player(this.width, this.height);
         this.bugs = new BugGenerator(this.width, this.height, 1, DIR_DOWN);
+        this.hud = new HUD(this.width, this.height);
     }
 
     /**
@@ -92,6 +100,7 @@ public class GameState : IState
     {
         this.bugs.draw();
         this.player.draw();
+        this.hud.draw();
     }
 
     /**

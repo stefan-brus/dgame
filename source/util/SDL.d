@@ -10,6 +10,7 @@ import derelict.opengl3.gl; // This module is needed because reload() needs to b
 import derelict.sdl2.image;
 import derelict.sdl2.mixer;
 import derelict.sdl2.sdl;
+import derelict.sdl2.ttf;
 
 import std.conv;
 import std.string;
@@ -146,6 +147,39 @@ public struct SDL
         }
 
         /**
+         * Create an empty RGBA surface
+         *
+         * Params:
+         *      width = The surface width
+         *      height = The surface height
+         *
+         * Returns:
+         *      The created surface
+         */
+
+        public static Surface createRGBASurface ( int width, int height )
+        {
+            Surface result;
+
+            result(SDL_CreateRGBSurface(0, width, height, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000));
+
+            return result;
+        }
+
+        /**
+         * Copy one surface to another
+         *
+         * Params:
+         *      src = The source
+         *      dst = The destination
+         */
+
+        public static void blitSurface ( Surface src, Surface dst )
+        {
+            SDL_BlitSurface(src(), null, dst(), null);
+        }
+
+        /**
          * Free the given surface
          *
          * Params:
@@ -155,6 +189,57 @@ public struct SDL
         public static void freeSurface ( Surface surface )
         {
             SDL_FreeSurface(surface());
+        }
+    }
+
+    /**
+     * Color struct
+     */
+
+    public struct Color
+    {
+        /**
+         * Color constants
+         */
+
+        public static enum RED = Color(0xFF, 0x00, 0x00, 0xFF);
+        public static enum GREEN = Color(0x00, 0xFF, 0x00, 0xFF);
+        public static enum BLUE = Color(0x00, 0x00, 0xFF, 0xFF);
+        public static enum YELLOW = Color(0xFF, 0xFF, 0x00, 0xFF);
+
+        /**
+         * Color byte values
+         */
+
+        ubyte r;
+        ubyte g;
+        ubyte b;
+        ubyte a;
+
+        /**
+         * The SDL_Color
+         */
+
+        private SDL_Color sdl_color;
+
+        /**
+         * opCall
+         *
+         * Returns:
+         *      The SDL_Color
+         */
+
+        public SDL_Color sdlColor ( )
+        {
+            if ( this.sdl_color == this.sdl_color.init )
+            {
+                this.sdl_color.r = this.r;
+                this.sdl_color.g = this.g;
+                this.sdl_color.b = this.b;
+                this.sdl_color.a = this.a;
+            }
+
+            return this.sdl_color;
         }
     }
 
@@ -374,7 +459,7 @@ public struct SDL
              * The SDL Mix_chunk pointer
              */
 
-            Mix_Chunk* mix_chunk;
+            private Mix_Chunk* mix_chunk;
 
             /**
              * opCall
@@ -407,7 +492,7 @@ public struct SDL
              * The SDL Mix_chunk pointer
              */
 
-            Mix_Music* mix_music;
+            private Mix_Music* mix_music;
 
             /**
              * opCall
@@ -553,6 +638,103 @@ public struct SDL
     }
 
     /**
+     * TTF wrapper struct
+     */
+
+    public struct TTF
+    {
+        /**
+         * SDL TTF_Font wrapper struct
+         */
+
+        public struct Font
+        {
+            /**
+             * The TTF_Font pointer
+             */
+
+            private TTF_Font* ttf_font;
+
+            /**
+             * opCall
+             *
+             * Params:
+             *      ttf_font = If not null, sets ttf_font to this pointer
+             *
+             * Returns:
+             *      The TTF_Font pointer
+             */
+
+            public TTF_Font* opCall ( TTF_Font* ttf_font = null )
+            {
+                if ( ttf_font !is null )
+                {
+                    this.ttf_font = ttf_font;
+                }
+
+                return this.ttf_font;
+            }
+        }
+
+        /**
+         * Open a font
+         *
+         * Params:
+         *      path = The path to the font
+         *      size = The size of the font
+         *
+         * Returns:
+         *      The opened font
+         */
+
+        public static Font openFont ( string path, int size )
+        {
+            Font result;
+
+            auto ttf_font = TTF_OpenFont(toStringz(path), size);
+
+            result(ttf_font);
+
+            return result;
+        }
+
+        /**
+         * Close the given font
+         *
+         * Params:
+         *      font = The font to close
+         */
+
+        public static void closeFont ( Font font )
+        {
+            TTF_CloseFont(font());
+        }
+
+        /**
+         * Render an SDL surface with the given text
+         *
+         * Params:
+         *      font = The font to render with
+         *      text = The text to display
+         *      color = The text color
+         *
+         * Returns:
+         *      The rendered SDL surface
+         */
+
+        public static Surface renderTextBlended ( Font font, string text, Color color )
+        {
+            Surface result;
+
+            auto sdl_surface = TTF_RenderText_Blended(font(), toStringz(text), color.sdlColor());
+
+            result(sdl_surface);
+
+            return result;
+        }
+    }
+
+    /**
      * Whether or not SDL/SDL GL has been initialized
      */
 
@@ -574,7 +756,9 @@ public struct SDL
             DerelictSDL2.load();
             DerelictSDL2Image.load();
             DerelictSDL2Mixer.load();
+            DerelictSDL2ttf.load();
             initialized = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == 0;
+            initialized &= TTF_Init() == 0;
             return initialized &= SDL_Init(SDL_INIT_VIDEO) == 0;
         }
 
@@ -673,6 +857,7 @@ public struct SDL
     {
         IMG_Quit();
         Mix_Quit();
+        TTF_Quit();
         SDL_Quit();
     }
 

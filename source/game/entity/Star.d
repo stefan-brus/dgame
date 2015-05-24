@@ -7,6 +7,7 @@ module game.entity.Star;
 import game.entity.model.Entity;
 
 import util.GL;
+import util.SDL;
 
 import std.random;
 
@@ -17,18 +18,10 @@ import std.random;
 public class Star : Entity
 {
     /**
-     * Struct to hold RGBA color values
+     * The star's color
      */
 
-    private struct Color
-    {
-        ubyte r;
-        ubyte g;
-        ubyte b;
-        ubyte a;
-    }
-
-    private Color color;
+    private SDL.Color color;
 
     /**
      * Constructor

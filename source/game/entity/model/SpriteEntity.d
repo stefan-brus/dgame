@@ -21,7 +21,7 @@ public abstract class SpriteEntity : Entity
      * Texture handles to textures that have already been loaded
      */
 
-    private static uint[string] LOADED_TEXTURES;
+    protected static uint[string] LOADED_TEXTURES;
 
     /**
      * The texture handle
