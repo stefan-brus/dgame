@@ -7,6 +7,7 @@ module game.entity.SpaceBug;
 import game.entity.model.AnimatedEntity;
 import game.entity.model.Direction;
 import game.entity.model.Entity;
+import game.world.World;
 import game.SoundLib;
 
 /**
@@ -45,6 +46,7 @@ public class SpaceBug : AnimatedEntity
         if ( other.type == other.type.SHOT )
         {
             SoundLib().play(SoundLib.HIT);
+            World().player.score++;
             this.kill();
         }
     }

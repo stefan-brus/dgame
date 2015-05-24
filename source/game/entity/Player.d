@@ -9,6 +9,8 @@ import game.entity.model.Entity;
 import game.entity.model.SpriteEntity;
 import game.entity.ShotGenerator;
 import game.entity.PlasmaShot;
+import game.world.World;
+import game.SoundLib;
 
 /**
  * Player entity class
@@ -33,6 +35,14 @@ public class Player : SpriteEntity
      */
 
     public ShotGenerator!PlasmaShot shots;
+
+    /**
+     * The invulnerability time counter
+     */
+
+    private uint invul_time;
+
+    private static enum INVUL_MAX = 2000;
 
     /**
      * Constructor
@@ -71,7 +81,31 @@ public class Player : SpriteEntity
 
     override public void collide ( Entity other )
     {
+        if ( other.type == Entity.Type.ENEMY && invul_time == 0 )
+        {
+            SoundLib().play(SoundLib.DEAD);
+            World().player.health--;
+            this.invul_time++;
+        }
+    }
 
+    /**
+     * Update the player entity state
+     *
+     * Params:
+     *      ms = The number of elapsed milliseconds since the last update
+     */
+
+    public void update ( uint ms )
+    {
+        if ( this.invul_time > 0 && this.invul_time < INVUL_MAX )
+        {
+            this.invul_time += ms;
+        }
+        else
+        {
+            this.invul_time = 0;
+        }
     }
 
     /**

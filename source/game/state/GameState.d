@@ -13,7 +13,7 @@ import game.entity.SpaceBug;
 import game.state.model.IState;
 import game.state.EndState;
 import game.state.States;
-import game.SoundLib;
+import game.world.World;
 
 import util.SDL;
 
@@ -90,6 +90,9 @@ public class GameState : IState
         this.player.setPos(200, 200);
         this.player.shots.recycleAll();
         this.bugs.recycleAll();
+
+        World().player.health = 2;
+        World().player.score = 0;
     }
 
     /**
@@ -150,24 +153,19 @@ public class GameState : IState
         this.player.dir = intersectDirs(this.player.dir, bound_dirs);
 
         this.player.move(ms);
+        this.player.update(ms);
         this.player.shoot(ms);
 
         this.bugs.update(ms);
 
-        void checkGameOver ( Entity e1, Entity e2 )
-        {
-            with ( Entity.Type )
-            {
-                if ( (e1.type == PLAYER && e2.type == ENEMY) ||
-                     (e1.type == ENEMY && e2.type == PLAYER) )
-                {
-                    states.setState(EndState.KEY);
-                    SoundLib().play(SoundLib.DEAD);
-                }
-            }
-        }
-
         Entity.checkCollisions(this.player.shots.active, this.bugs.active);
-        Entity.checkCollisions([this.player], this.bugs.active, &checkGameOver);
+        Entity.checkCollisions([this.player], this.bugs.active);
+
+        this.hud.update();
+
+        if ( World().player.health == 0 )
+        {
+            states.setState(EndState.KEY);
+        }
     }
 }

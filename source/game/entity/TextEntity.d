@@ -86,6 +86,17 @@ public class TextEntity : SpriteEntity
     }
 
     /**
+     * Set the text
+     */
+
+    public void setText ( string text )
+    {
+        this.path = "__TEXT__" ~ text;
+
+        this.texture = this.path in LOADED_TEXTURES ? LOADED_TEXTURES[path] : createTexture(text, this.color, this.path);
+    }
+
+    /**
      * Create a texture displaying the given text
      * Store it in the given path
      *
