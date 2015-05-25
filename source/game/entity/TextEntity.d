@@ -65,15 +65,6 @@ public class TextEntity : SpriteEntity
     }
 
     /**
-     * Static destructor, close the font
-     */
-
-    ~this ( )
-    {
-        SDL.TTF.closeFont(FONT);
-    }
-
-    /**
      * Collide, do nothing
      *
      * Params:
