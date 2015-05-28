@@ -89,6 +89,7 @@ public class GameState : IState
     {
         this.player.setPos(200, 200);
         this.player.shots.recycleAll();
+        this.player.invul_time = 0;
         this.bugs.recycleAll();
 
         World().player.health = 2;

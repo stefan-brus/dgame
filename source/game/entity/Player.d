@@ -12,6 +12,8 @@ import game.entity.PlasmaShot;
 import game.world.World;
 import game.SoundLib;
 
+import util.GL;
+
 /**
  * Player entity class
  */
@@ -40,7 +42,7 @@ public class Player : SpriteEntity
      * The invulnerability time counter
      */
 
-    private uint invul_time;
+    public uint invul_time;
 
     private static enum INVUL_MAX = 2000;
 
@@ -69,7 +71,9 @@ public class Player : SpriteEntity
     {
         this.shots.draw();
 
+        if ( this.invul_time > 0 ) GL.color4ub(0xFF, 0xFF, 0xFF, 0x88);
         super.draw();
+        if ( this.invul_time > 0 ) GL.color4ub(0xFF, 0xFF, 0xFF, 0xFF);
     }
 
     /**
