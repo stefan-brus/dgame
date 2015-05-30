@@ -30,6 +30,14 @@ public class HUD
     private TextEntity score;
 
     /**
+     * Mission objectives
+     */
+
+    private TextEntity objectives_header;
+
+    private TextEntity[] objectives;
+
+    /**
      * Constructor
      *
      * Params:
@@ -44,6 +52,10 @@ public class HUD
 
         // Create score indicator in bottom right corner
         this.score = new TextEntity("Score: " ~ to!string(World().player.score), SDL.Color.YELLOW, width - 120, height - 60, 120, 60);
+
+        // Create mission objectives halfway down on the right hand side
+        this.objectives_header = new TextEntity("Objectives:", SDL.Color.CYAN, width - 200, height / 2, 100, 40);
+        this.objectives ~= new TextEntity("- Kill 50 space bugs", SDL.Color.CYAN, width - 200, height / 2 + 40, 200, 40);
     }
 
     /**
@@ -54,6 +66,12 @@ public class HUD
     {
         this.health.draw();
         this.score.draw();
+
+        this.objectives_header.draw();
+        foreach ( objective; this.objectives )
+        {
+            objective.draw();
+        }
     }
 
     /**
