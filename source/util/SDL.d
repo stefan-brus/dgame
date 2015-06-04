@@ -262,6 +262,7 @@ public struct SDL
         public static enum SCAN_D = SDL_SCANCODE_D;
         public static enum SCAN_SPACE = SDL_SCANCODE_SPACE;
         public static enum SCAN_RETURN = SDL_SCANCODE_RETURN;
+        public static enum SCAN_TAB = SDL_SCANCODE_TAB;
 
         /**
          * The SDL_Event pointer

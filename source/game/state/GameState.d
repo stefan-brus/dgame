@@ -135,6 +135,7 @@ public class GameState : IState
         }
 
         this.player.is_shooting = key_state[SDL.Event.SCAN_SPACE] > 0;
+        this.hud.show_objectives = key_state[SDL.Event.SCAN_TAB] > 0;
 
         return true;
     }

@@ -7,6 +7,7 @@ module game.entity.HUD;
 import game.entity.TextEntity;
 import game.world.World;
 
+import util.GL;
 import util.SDL;
 
 import std.conv;
@@ -38,6 +39,12 @@ public class HUD
     private TextEntity[] objectives;
 
     /**
+     * Whether or not to display the current objectives
+     */
+
+    public bool show_objectives;
+
+    /**
      * Constructor
      *
      * Params:
@@ -54,7 +61,7 @@ public class HUD
         this.score = new TextEntity("Score: " ~ to!string(World().player.score), SDL.Color.YELLOW, width - 120, height - 60, 120, 60);
 
         // Create mission objectives halfway down on the right hand side
-        this.objectives_header = new TextEntity("Objectives:", SDL.Color.CYAN, width - 200, height / 2, 100, 40);
+        this.objectives_header = new TextEntity("Objectives (tab):", SDL.Color.CYAN, width - 200, height / 2, 200, 40);
         this.objectives ~= new TextEntity("- Kill 50 space bugs", SDL.Color.CYAN, width - 200, height / 2 + 40, 200, 40);
     }
 
@@ -67,10 +74,18 @@ public class HUD
         this.health.draw();
         this.score.draw();
 
-        this.objectives_header.draw();
-        foreach ( objective; this.objectives )
+        if ( this.show_objectives )
         {
-            objective.draw();
+            this.objectives_header.draw();
+            foreach ( objective; this.objectives )
+            {
+                objective.draw();
+            }
+        }
+        else
+        {
+            GL.color4ub(0xFF, 0xFF, 0xFF, 0x44);
+            this.objectives_header.draw();
         }
     }
 
