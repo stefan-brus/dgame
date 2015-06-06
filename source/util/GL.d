@@ -33,6 +33,26 @@ public struct GL
     public static enum ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA;
 
     /**
+     * Struct to hold information about an OpenGL texture
+     */
+
+    public struct Texture
+    {
+        /**
+         * The texture handle
+         */
+
+        uint handle;
+
+        /**
+         * Dimensions
+         */
+
+        float width;
+        float height;
+    }
+
+    /**
      * Static constructor
      *
      * Initialize Derelict OpenGL bindings

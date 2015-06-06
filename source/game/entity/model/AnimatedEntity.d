@@ -81,7 +81,7 @@ public class AnimatedEntity : SpriteEntity
         auto s_max = cast(float)this.cur_frame / frames;
 
         GL.enable(GL.TEXTURE_2D);
-        GL.bindTexture(this.texture);
+        GL.bindTexture(this.texture.handle);
         GL.begin(GL.QUADS);
         GL.texCoord2f(s_min, 0);
         GL.vertex2f(this.x, this.y);

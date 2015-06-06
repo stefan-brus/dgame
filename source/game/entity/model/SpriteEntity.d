@@ -21,13 +21,13 @@ public abstract class SpriteEntity : Entity
      * Texture handles to textures that have already been loaded
      */
 
-    protected static uint[string] LOADED_TEXTURES;
+    protected static GL.Texture[string] LOADED_TEXTURES;
 
     /**
-     * The texture handle
+     * The texture
      */
 
-    protected uint texture;
+    protected GL.Texture texture;
 
     /**
      * Constructor
@@ -69,7 +69,7 @@ public abstract class SpriteEntity : Entity
     override public void draw ( )
     {
         GL.enable(GL.TEXTURE_2D);
-        GL.bindTexture(this.texture);
+        GL.bindTexture(this.texture.handle);
         GL.begin(GL.QUADS);
         GL.texCoord2i(0, 0);
         GL.vertex2f(this.x, this.y);
@@ -96,7 +96,7 @@ public abstract class SpriteEntity : Entity
      *      The texture handle
      */
 
-    private static uint loadTexture ( string path )
+    private static GL.Texture loadTexture ( string path )
     {
         auto surface = SDL.imgLoad(path);
         enforce(surface() !is null, "Failed to load image at " ~ path);
@@ -113,10 +113,12 @@ public abstract class SpriteEntity : Entity
         GL.texParameteri(GL.TEXTURE_MIN_FILTER, GL.LINEAR);
         GL.texParameteri(GL.TEXTURE_MAG_FILTER, GL.LINEAR);
         GL.texImage2D(surface().w, surface().h, surface().pixels);
-        LOADED_TEXTURES[path] = handle;
+
+        auto result = GL.Texture(handle, surface().w, surface().h);
+        LOADED_TEXTURES[path] = result;
 
         SDL.Surface.freeSurface(surface);
 
-        return handle;
+        return result;
     }
 }

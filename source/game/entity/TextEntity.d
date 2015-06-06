@@ -47,21 +47,15 @@ public class TextEntity : SpriteEntity
      *      color = The text color
      *      x = The starting x coordinate
      *      y = The starting y coordinate
-     *      width = The width
-     *      height = The height
      */
 
-    public this ( string text, SDL.Color color, float x, float y, float width, float height )
+    public this ( string text, SDL.Color color, float x, float y )
     {
-        this.path = "__TEXT__" ~ text;
         this.color = color;
 
-        if ( this.path !in LOADED_TEXTURES )
-        {
-            this.texture = createTexture(text, this.color, this.path);
-        }
+        this.setText(text);
 
-        super(this.path, x, y, width, height);
+        super(this.path, x, y, this.width, this.height);
     }
 
     /**
@@ -85,6 +79,9 @@ public class TextEntity : SpriteEntity
         this.path = "__TEXT__" ~ text;
 
         this.texture = this.path in LOADED_TEXTURES ? LOADED_TEXTURES[path] : createTexture(text, this.color, this.path);
+
+        this.width = this.texture.width;
+        this.height = this.texture.height;
     }
 
     /**
@@ -100,7 +97,7 @@ public class TextEntity : SpriteEntity
      *      The texture handle
      */
 
-    private static uint createTexture ( string text, SDL.Color color, string path )
+    private static GL.Texture createTexture ( string text, SDL.Color color, string path )
     {
         if ( FONT == FONT.init )
         {
@@ -125,11 +122,13 @@ public class TextEntity : SpriteEntity
         GL.texParameteri(GL.TEXTURE_MIN_FILTER, GL.LINEAR);
         GL.texParameteri(GL.TEXTURE_MAG_FILTER, GL.LINEAR);
         GL.texImage2D(width, height, resized().pixels);
-        LOADED_TEXTURES[path] = handle;
+
+        auto result = GL.Texture(handle, width, height);
+        LOADED_TEXTURES[path] = result;
 
         SDL.Surface.freeSurface(surface);
         SDL.Surface.freeSurface(resized);
 
-        return handle;
+        return result;
     }
 }

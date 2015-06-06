@@ -55,14 +55,14 @@ public class HUD
     public this ( int width, int height )
     {
         // Create health indicator in bottom left corner
-        this.health = new TextEntity("Health: " ~ to!string(World().player.health), SDL.Color.RED, 20, height - 60, 100, 60);
+        this.health = new TextEntity("Health: " ~ to!string(World().player.health), SDL.Color.RED, 20, height - 60);
 
         // Create score indicator in bottom right corner
-        this.score = new TextEntity("Score: " ~ to!string(World().player.score), SDL.Color.YELLOW, width - 120, height - 60, 120, 60);
+        this.score = new TextEntity("Score: " ~ to!string(World().player.score), SDL.Color.YELLOW, width - 120, height - 60);
 
         // Create mission objectives halfway down on the right hand side
-        this.objectives_header = new TextEntity("Objectives (tab):", SDL.Color.CYAN, width - 200, height / 2, 200, 40);
-        this.objectives ~= new TextEntity("- Kill 50 space bugs", SDL.Color.CYAN, width - 200, height / 2 + 40, 200, 40);
+        this.objectives_header = new TextEntity("Objectives (tab):", SDL.Color.CYAN, width - 200, height / 2);
+        this.objectives ~= new TextEntity("- Kill 50 space bugs", SDL.Color.CYAN, width - 200, height / 2 + 40);
     }
 
     /**
