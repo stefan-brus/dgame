@@ -46,7 +46,10 @@ public class SpaceBug : AnimatedEntity
         if ( other.type == other.type.SHOT )
         {
             SoundLib().play(SoundLib.HIT);
+
             World().player.score++;
+            World().quests.enemyKilled(Enemies.SpaceBug);
+
             this.kill();
         }
     }

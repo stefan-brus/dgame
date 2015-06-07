@@ -19,6 +19,19 @@ import std.conv;
 public class HUD
 {
     /**
+     * How far from the right edge to display the objectives
+     */
+
+    private static enum OBJECTIVES_OFFSET = 250;
+
+    /**
+     * Dimensions of the game world
+     */
+
+    private int width;
+    private int height;
+
+    /**
      * Health indicator
      */
 
@@ -35,7 +48,6 @@ public class HUD
      */
 
     private TextEntity objectives_header;
-
     private TextEntity[] objectives;
 
     /**
@@ -54,6 +66,9 @@ public class HUD
 
     public this ( int width, int height )
     {
+        this.width = width;
+        this.height = height;
+
         // Create health indicator in bottom left corner
         this.health = new TextEntity("Health: " ~ to!string(World().player.health), SDL.Color.RED, 20, height - 60);
 
@@ -61,8 +76,8 @@ public class HUD
         this.score = new TextEntity("Score: " ~ to!string(World().player.score), SDL.Color.YELLOW, width - 120, height - 60);
 
         // Create mission objectives halfway down on the right hand side
-        this.objectives_header = new TextEntity("Objectives (tab):", SDL.Color.CYAN, width - 200, height / 2);
-        this.objectives ~= new TextEntity("- Kill 50 space bugs", SDL.Color.CYAN, width - 200, height / 2 + 40);
+        this.objectives_header = new TextEntity("Objectives (tab):", SDL.Color.CYAN, width - OBJECTIVES_OFFSET, height / 2);
+        this.createObjectives();
     }
 
     /**
@@ -97,5 +112,38 @@ public class HUD
     {
         this.health.setText("Health: " ~ to!string(World().player.health));
         this.score.setText("Score: " ~ to!string(World().player.score));
+
+        this.updateObjectives();
+    }
+
+    /**
+     * Update the quest objective texts
+     */
+
+    private void updateObjectives ( )
+    {
+        auto obj_strs = World().quests.current.toObjectives();
+        assert(obj_strs.length == this.objectives.length);
+
+        foreach ( i, str; obj_strs )
+        {
+            this.objectives[i].setText("- " ~ str);
+        }
+    }
+
+    /**
+     * Create the objectives text based on the current quest
+     */
+
+    private void createObjectives ( )
+    {
+        static enum OBJECTIVE_TEXT_HEIGHT = 40;
+
+        this.objectives.length = 0;
+
+        foreach ( i, obj; World().quests.current.toObjectives() )
+        {
+            this.objectives ~= new TextEntity("- " ~ obj, SDL.Color.CYAN, this.width - OBJECTIVES_OFFSET, this.height / 2 + OBJECTIVE_TEXT_HEIGHT * (i + 1));
+        }
     }
 }

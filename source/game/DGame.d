@@ -13,6 +13,7 @@ import game.state.model.IState;
 import game.state.EndState;
 import game.state.GameState;
 import game.state.IntroState;
+import game.state.QuestCompleteState;
 import game.state.States;
 import game.SoundLib;
 
@@ -71,6 +72,7 @@ public class DGame : IGame
         init_states[IntroState.KEY] = new IntroState();
         init_states[GameState.KEY] = new GameState(this.width, this.height);
         init_states[EndState.KEY] = new EndState();
+        init_states[QuestCompleteState.KEY] = new QuestCompleteState();
 
         this.states = new States(init_states);
     }

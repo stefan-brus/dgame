@@ -12,6 +12,7 @@ import game.entity.Player;
 import game.entity.SpaceBug;
 import game.state.model.IState;
 import game.state.EndState;
+import game.state.QuestCompleteState;
 import game.state.States;
 import game.world.World;
 
@@ -168,6 +169,10 @@ public class GameState : IState
         if ( World().player.health == 0 )
         {
             states.setState(EndState.KEY);
+        }
+        else if ( World().quests.current.isComplete() )
+        {
+            states.setState(QuestCompleteState.KEY);
         }
     }
 }

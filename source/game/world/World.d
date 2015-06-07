@@ -4,6 +4,14 @@
 
 module game.world.World;
 
+import game.world.quest.Quests;
+
+/**
+ * Convenience alias
+ */
+
+public alias Enemies = World.Enemies;
+
 /**
  * World singleton
  */
@@ -15,6 +23,15 @@ public class World
      */
 
     private static World instance;
+
+    /**
+     * Types of enemies
+     */
+
+    public enum Enemies
+    {
+        SpaceBug
+    }
 
     /**
      * Player statistics
@@ -29,6 +46,12 @@ public class World
     public Player player;
 
     /**
+     * Quest handler
+     */
+
+    public Quests quests;
+
+    /**
      * Constructor, private because singleton
      */
 
@@ -36,6 +59,8 @@ public class World
     {
         this.player.health = 2;
         this.player.score = 0;
+
+        this.quests = new Quests();
     }
 
     /**
