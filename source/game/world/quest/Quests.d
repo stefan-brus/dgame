@@ -31,9 +31,18 @@ public class Quests
 
         /**
          * Get the array of objectives strings for this quest
+         *
+         * Returns:
+         *      The objectives in human-readable string format
          */
 
         string[] toObjectives ( );
+
+        /**
+         * Reset the quest objectives
+         */
+
+        void reset ( );
     }
 
     /**
@@ -58,6 +67,11 @@ public class Quests
         override string[] toObjectives ( )
         {
             return [to!string(this.killed_bugs) ~ "/" ~ to!string(BUGS_TO_KILL) ~ " space bugs killed"];
+        }
+
+        override void reset ( )
+        {
+            this.killed_bugs = 0;
         }
     }
 

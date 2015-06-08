@@ -107,6 +107,8 @@ public class GameState : IState
 
         World().player.health = 2;
         World().player.score = 0;
+
+        World().quests.current.reset();
     }
 
     /**
