@@ -31,7 +31,7 @@ public class SpaceBug : AnimatedEntity
         super(2, 250, IMG_PATH, 0, 0, 32, 32);
 
         this.speed = 2.0;
-        this.type = this.type.ENEMY;
+        this.type = this.type.Enemy;
     }
 
     /**
@@ -43,7 +43,7 @@ public class SpaceBug : AnimatedEntity
 
     override public void collide ( Entity other )
     {
-        if ( other.type == other.type.SHOT )
+        if ( other.type == other.type.Shot )
         {
             SoundLib().play(SoundLib.HIT);
 

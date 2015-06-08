@@ -62,9 +62,10 @@ public abstract class Generator ( T : Entity )
      *
      * Params:
      *      ms = The number of elapsed milliseconds since the last update
+     *      spawn = Whether or not to check if a new enemy should be spawned
      */
 
-    public abstract void update ( uint ms );
+    public abstract void update ( uint ms, bool spawn = true );
 
     /**
      * Override this, draw the active entities

@@ -59,9 +59,10 @@ public class ShotGenerator ( T : Entity ) : Generator!T
      *
      * Params:
      *      ms = The number of elapsed milliseconds since the last update
+     *      spawn = unused
      */
 
-    override public void update ( uint ms )
+    override public void update ( uint ms, bool spawn = true )
     {
         this.elapsed += ms;
 

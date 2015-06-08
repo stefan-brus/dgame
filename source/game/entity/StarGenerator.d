@@ -48,9 +48,10 @@ public class StarGenerator : Generator!Star
      *
      * Params:
      *      ms = The number of elapsed milliseconds since the last update
+     *      spawn = unused
      */
 
-    override public void update ( uint ms )
+    override public void update ( uint ms, bool spawn = true )
     {
         if ( uniform(1, 100) <= FREQUENCY )
         {

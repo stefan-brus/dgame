@@ -18,10 +18,10 @@ public abstract class Entity
      */
 
     public enum Type {
-        BACKGROUND, // Background entity, default value
-        PLAYER,     // Player entity
-        ENEMY,      // Enemy entity
-        SHOT        // Shot entity
+        Background, // Background entity, default value
+        Player,     // Player entity
+        Enemy,      // Enemy entity
+        Shot        // Shot entity
     }
 
     public Type type;
@@ -98,10 +98,10 @@ public abstract class Entity
 
         with ( Direction )
         {
-            this.y -= this.dir[UP] ? distance : 0;
-            this.x -= this.dir[LEFT] ? distance : 0;
-            this.y += this.dir[DOWN] ? distance : 0;
-            this.x += this.dir[RIGHT] ? distance : 0;
+            this.y -= this.dir[Up] ? distance : 0;
+            this.x -= this.dir[Left] ? distance : 0;
+            this.y += this.dir[Down] ? distance : 0;
+            this.x += this.dir[Right] ? distance : 0;
         }
     }
 
@@ -141,10 +141,10 @@ public abstract class Entity
 
         with ( Direction )
         {
-            dirs[UP] = this.y > 0;
-            dirs[LEFT] = this.x > 0;
-            dirs[DOWN] = h > this.y + this.height;
-            dirs[RIGHT] = w > this.x + this.width;
+            dirs[Up] = this.y > 0;
+            dirs[Left] = this.x > 0;
+            dirs[Down] = h > this.y + this.height;
+            dirs[Right] = w > this.x + this.width;
         }
 
         return dirs;
@@ -209,16 +209,16 @@ public abstract class Entity
      * For now, sends it off screen based on its direction
      */
 
-    protected void kill ( )
+    public void kill ( )
     {
         with ( Direction )
         {
             enum OFFSET = 10000;
 
-            this.y += this.dir[UP] ? OFFSET : 0;
-            this.x -= this.dir[LEFT] ? OFFSET : 0;
-            this.y -= this.dir[DOWN] ? OFFSET : 0;
-            this.x += this.dir[RIGHT] ? OFFSET : 0;
+            this.y += this.dir[Up] ? OFFSET : 0;
+            this.x -= this.dir[Left] ? OFFSET : 0;
+            this.y -= this.dir[Down] ? OFFSET : 0;
+            this.x += this.dir[Right] ? OFFSET : 0;
         }
     }
 

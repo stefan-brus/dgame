@@ -59,7 +59,7 @@ public class Player : SpriteEntity
         super(IMG_PATH, 200, 200, 64, 64);
 
         this.speed = 4.0;
-        this.type = Entity.Type.PLAYER;
+        this.type = Entity.Type.Player;
         this.shots = new ShotGenerator!PlasmaShot(width, height, 5, DIR_UP);
     }
 
@@ -85,7 +85,7 @@ public class Player : SpriteEntity
 
     override public void collide ( Entity other )
     {
-        if ( other.type == Entity.Type.ENEMY && invul_time == 0 )
+        if ( other.type == Entity.Type.Enemy && invul_time == 0 )
         {
             SoundLib().play(SoundLib.DEAD);
             World().player.health--;

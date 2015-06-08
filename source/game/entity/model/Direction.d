@@ -9,10 +9,10 @@ module game.entity.model.Direction;
  */
 
 public enum Direction {
-    UP,
-    LEFT,
-    DOWN,
-    RIGHT
+    Up,
+    Left,
+    Down,
+    Right
 }
 
 public alias bool[Direction] Directions;
@@ -22,31 +22,31 @@ public alias bool[Direction] Directions;
  */
 
 public enum Directions DIR_UP = [
-    Direction.UP: true,
-    Direction.LEFT: false,
-    Direction.DOWN: false,
-    Direction.RIGHT: false
+    Direction.Up: true,
+    Direction.Left: false,
+    Direction.Down: false,
+    Direction.Right: false
 ];
 
 public enum Directions DIR_DOWN = [
-    Direction.UP: false,
-    Direction.LEFT: false,
-    Direction.DOWN: true,
-    Direction.RIGHT: false
+    Direction.Up: false,
+    Direction.Left: false,
+    Direction.Down: true,
+    Direction.Right: false
 ];
 
 public enum Directions DIR_LEFT = [
-    Direction.UP: false,
-    Direction.LEFT: true,
-    Direction.DOWN: false,
-    Direction.RIGHT: false
+    Direction.Up: false,
+    Direction.Left: true,
+    Direction.Down: false,
+    Direction.Right: false
 ];
 
 public enum Directions DIR_RIGHT = [
-    Direction.UP: false,
-    Direction.LEFT: false,
-    Direction.DOWN: false,
-    Direction.RIGHT: true
+    Direction.Up: false,
+    Direction.Left: false,
+    Direction.Down: false,
+    Direction.Right: true
 ];
 
 /**
@@ -66,10 +66,10 @@ public Directions intersectDirs ( Directions d1, Directions d2 )
 
     with ( Direction )
     {
-        dirs[UP] = d1[UP] && d2[UP];
-        dirs[LEFT] = d1[LEFT] && d2[LEFT];
-        dirs[DOWN] = d1[DOWN] && d2[DOWN];
-        dirs[RIGHT] = d1[RIGHT] && d2[RIGHT];
+        dirs[Up] = d1[Up] && d2[Up];
+        dirs[Left] = d1[Left] && d2[Left];
+        dirs[Down] = d1[Down] && d2[Down];
+        dirs[Right] = d1[Right] && d2[Right];
     }
 
     return dirs;
@@ -89,6 +89,6 @@ public bool still ( Directions dirs )
 {
     with ( Direction )
     {
-        return !dirs[UP] && !dirs[LEFT] && !dirs[DOWN] && !dirs[RIGHT];
+        return !dirs[Up] && !dirs[Left] && !dirs[Down] && !dirs[Right];
     }
 }

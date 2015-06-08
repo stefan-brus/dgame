@@ -6,8 +6,10 @@ module game.state.GameState;
 
 import game.entity.model.Direction;
 import game.entity.model.Entity;
+import game.entity.Asteroid;
 import game.entity.EnemyGenerator;
 import game.entity.HUD;
+import game.entity.IrregularEnemyGenerator;
 import game.entity.Player;
 import game.entity.SpaceBug;
 import game.state.model.IState;
@@ -58,6 +60,14 @@ public class GameState : IState
     private BugGenerator bugs;
 
     /**
+     * Asteroid generator
+     */
+
+    private alias AsteroidGenerator = IrregularEnemyGenerator!Asteroid;
+
+    private AsteroidGenerator asteroids;
+
+    /**
      * Constructor
      *
      * Params:
@@ -79,6 +89,7 @@ public class GameState : IState
     {
         this.player = new Player(this.width, this.height);
         this.bugs = new BugGenerator(this.width, this.height, 1, DIR_DOWN);
+        this.asteroids = new AsteroidGenerator(10, this.width, this.height, 2, DIR_DOWN);
         this.hud = new HUD(this.width, this.height);
     }
 
@@ -92,6 +103,7 @@ public class GameState : IState
         this.player.shots.recycleAll();
         this.player.invul_time = 0;
         this.bugs.recycleAll();
+        this.asteroids.recycleAll();
 
         World().player.health = 2;
         World().player.score = 0;
@@ -104,6 +116,7 @@ public class GameState : IState
     override public void render ( )
     {
         this.bugs.draw();
+        this.asteroids.draw();
         this.player.draw();
         this.hud.draw();
     }
@@ -129,10 +142,10 @@ public class GameState : IState
 
         with ( Direction )
         {
-            this.player.dir[UP] = key_state[SDL.Event.SCAN_W] > 0;
-            this.player.dir[LEFT] = key_state[SDL.Event.SCAN_A] > 0;
-            this.player.dir[DOWN] = key_state[SDL.Event.SCAN_S] > 0;
-            this.player.dir[RIGHT] = key_state[SDL.Event.SCAN_D] > 0;
+            this.player.dir[Up] = key_state[SDL.Event.SCAN_W] > 0;
+            this.player.dir[Left] = key_state[SDL.Event.SCAN_A] > 0;
+            this.player.dir[Down] = key_state[SDL.Event.SCAN_S] > 0;
+            this.player.dir[Right] = key_state[SDL.Event.SCAN_D] > 0;
         }
 
         this.player.is_shooting = key_state[SDL.Event.SCAN_SPACE] > 0;
@@ -160,9 +173,13 @@ public class GameState : IState
         this.player.shoot(ms);
 
         this.bugs.update(ms);
-
         Entity.checkCollisions(this.player.shots.active, this.bugs.active);
         Entity.checkCollisions([this.player], this.bugs.active);
+
+        this.asteroids.update(ms);
+        Entity.checkCollisions(this.player.shots.active, this.asteroids.active);
+        Entity.checkCollisions(this.bugs.active, this.asteroids.active);
+        Entity.checkCollisions([this.player], this.asteroids.active);
 
         this.hud.update();
 

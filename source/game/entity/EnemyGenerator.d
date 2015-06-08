@@ -23,19 +23,19 @@ public class EnemyGenerator ( T : Entity ) : Generator!T
      * The rate at which to generate enemies per second
      */
 
-    private float frequency;
+    protected float frequency;
 
     /**
      * The direction to send the enemies in
      */
 
-    private Directions dir;
+    protected Directions dir;
 
     /**
      * Number of elapsed milliseconds since the last update
      */
 
-    private uint elapsed;
+    protected uint elapsed;
 
     /**
      * Constructor
@@ -60,13 +60,14 @@ public class EnemyGenerator ( T : Entity ) : Generator!T
      *
      * Params:
      *      ms = The number of elapsed milliseconds since the last update
+     *      spawn = Whether or not to check if a new enemy should be spawned
      */
 
-    override public void update ( uint ms )
+    override public void update ( uint ms, bool spawn = true )
     {
         this.elapsed += ms;
 
-        if ( this.elapsed >= 1000 / this.frequency )
+        if ( spawn && this.elapsed >= 1000 / this.frequency )
         {
             auto enemy = this.generate();
             auto start_x = uniform(0, this.width - enemy.width);

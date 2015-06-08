@@ -25,7 +25,7 @@ public class PlasmaShot : Entity
         super(0, 0, 5, 5);
 
         this.speed = 8.0;
-        this.type = this.type.SHOT;
+        this.type = this.type.Shot;
     }
 
     /**
@@ -53,7 +53,7 @@ public class PlasmaShot : Entity
 
     override public void collide ( Entity other )
     {
-        if ( other.type == other.type.ENEMY )
+        if ( other.type == other.type.Enemy )
         {
             this.kill();
         }
