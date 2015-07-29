@@ -256,13 +256,16 @@ public struct SDL
 
         public static enum QUIT = SDL_QUIT;
         public static enum KEYDOWN = SDL_KEYDOWN;
+        public static enum KEYUP = SDL_KEYUP;
         public static enum SCAN_W = SDL_SCANCODE_W;
         public static enum SCAN_A = SDL_SCANCODE_A;
         public static enum SCAN_S = SDL_SCANCODE_S;
         public static enum SCAN_D = SDL_SCANCODE_D;
+        public static enum SCAN_M = SDL_SCANCODE_M;
         public static enum SCAN_SPACE = SDL_SCANCODE_SPACE;
         public static enum SCAN_RETURN = SDL_SCANCODE_RETURN;
         public static enum SCAN_TAB = SDL_SCANCODE_TAB;
+        public static enum SCAN_LCTRL = SDL_SCANCODE_LCTRL;
 
         /**
          * The SDL_Event pointer
@@ -288,6 +291,29 @@ public struct SDL
             }
 
             return this.sdl_event;
+        }
+
+        /**
+         * Get the scancode for this event, as long as this is a keyboard event
+         *
+         * Returns:
+         *      The scancode of this event
+         */
+
+        public int getScancode ( )
+        in
+        {
+            bool isKeyType ( )
+            {
+                return this.sdl_event.type == KEYDOWN ||
+                       this.sdl_event.type == KEYUP;
+            }
+
+            assert(isKeyType());
+        }
+        body
+        {
+            return this.sdl_event.key.keysym.scancode;
         }
 
         /**
@@ -572,7 +598,7 @@ public struct SDL
         }
 
         /**
-         * Play the give music
+         * Play the given music
          *
          * Params:
          *      music = The music to play
@@ -581,6 +607,24 @@ public struct SDL
         public static void playMusic ( Music music )
         {
             Mix_PlayMusic(music(), -1);
+        }
+
+        /**
+         * Pause the currently playing music
+         */
+
+        public static void pauseMusic ( )
+        {
+            Mix_PauseMusic();
+        }
+
+        /**
+         * Resume the currently playing music
+         */
+
+        public static void resumeMusic ( )
+        {
+            Mix_ResumeMusic();
         }
 
         /**

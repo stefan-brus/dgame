@@ -53,6 +53,12 @@ public class SoundLib
     private SDL.Mix.Music[string] music_map;
 
     /**
+     * Whether or not music is playing
+     */
+
+    private bool music_on;
+
+    /**
      * Constructor, private because singleton
      */
 
@@ -131,5 +137,24 @@ public class SoundLib
     body
     {
         SDL.Mix.playMusic(this.music_map[music]);
+        this.music_on = true;
+    }
+
+    /**
+     * Toggle whether or not the music is playing
+     */
+
+    public void toggleMusic ( )
+    {
+        if ( this.music_on )
+        {
+            SDL.Mix.pauseMusic();
+            this.music_on = false;
+        }
+        else
+        {
+            SDL.Mix.resumeMusic();
+            this.music_on = true;
+        }
     }
 }

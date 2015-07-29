@@ -56,6 +56,14 @@ public class DGame : IGame
     private StarGenerator stars;
 
     /**
+     * Whether or not 'M' has been released
+     *
+     * TODO: Come up with a better solution for this hack
+     */
+
+    private bool m_released;
+
+    /**
      * Constructor
      *
      * Params:
@@ -75,6 +83,7 @@ public class DGame : IGame
         init_states[QuestCompleteState.KEY] = new QuestCompleteState();
 
         this.states = new States(init_states);
+        this.m_released = true;
     }
 
     /**
@@ -119,6 +128,27 @@ public class DGame : IGame
 
     override public bool handle ( SDL.Event event )
     {
+        auto key_state = SDL.getKeyboardState();
+
+        if ( key_state is null )
+        {
+            return false;
+        }
+
+        if ( this.m_released &&
+             key_state[SDL.Event.SCAN_LCTRL] &&
+             event().type == SDL.Event.KEYDOWN &&
+             event.getScancode() == SDL.Event.SCAN_M )
+        {
+            SoundLib().toggleMusic();
+            this.m_released = false;
+        }
+        else if ( event().type == SDL.Event.KEYUP &&
+                  event.getScancode() == SDL.Event.SCAN_M )
+        {
+            this.m_released = true;
+        }
+
         return this.states().handle(event);
     }
 
