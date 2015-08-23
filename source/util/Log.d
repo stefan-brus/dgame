@@ -75,5 +75,3 @@ public class GameLogger : MultiLogger
         this.insertLogger("logfile", new GameFileLogger(path));
     }
 }
-
-
