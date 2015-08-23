@@ -21,4 +21,10 @@ public struct Config
      */
 
     public static enum MS_PER_FRAME = 1000 / FPS;
+
+    /**
+     * The path to the log file
+     */
+
+    public static enum LOG_FILE = "game.log";
 }

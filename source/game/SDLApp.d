@@ -5,6 +5,7 @@
 module game.SDLApp;
 
 import game.model.IGame;
+import game.util.Log;
 import game.Config;
 
 import util.GL;
@@ -67,6 +68,12 @@ public class SDLApp
     private bool running;
 
     /**
+     * The logger instance
+     */
+
+    private GameLogger logger;
+
+    /**
      * Constructor
      *
      * Creates the SDL window with the given name and runs the given game
@@ -80,10 +87,12 @@ public class SDLApp
 
     public this ( string name, int width, int height, IGame game )
     {
+        this.logger = new GameLogger(Config.LOG_FILE);
+
         this.win = SDL.Window.createWindow(name, width, height);
         if ( this.win() is null )
         {
-            logSDLError("Error creating window");
+            this.logSDLError("Error creating window");
             assert(false);
         }
 
@@ -93,7 +102,7 @@ public class SDLApp
         this.surface = SDL.Surface.getWindowSurface(this.win);
         if ( this.surface() is null )
         {
-            logSDLError("Error getting window surface");
+            this.logSDLError("Error getting window surface");
             SDL.Window.destroyWindow(this.win);
             assert(false);
         }
@@ -101,7 +110,7 @@ public class SDLApp
         this.gl_context = SDL.GL.getContext(this.win);
         if ( this.gl_context() is null )
         {
-            logSDLError("Error creating SDL GL context");
+            this.logSDLError("Error creating SDL GL context");
             SDL.Window.destroyWindow(this.win);
             assert(false);
         }
@@ -133,14 +142,12 @@ public class SDLApp
     {
         if ( !SDL.init() )
         {
-            logSDLError("Error initializing SDL");
-            assert(false);
+            assert(false, "Error initializing SDL");
         }
 
         if ( !SDL.initGL() )
         {
-            logSDLError("Error initializing SDL GL");
-            assert(false);
+            assert(false, "Error initializing SDL GL");
         }
     }
 
@@ -175,8 +182,10 @@ public class SDLApp
 
         try
         {
+            this.logger.info("Initializing game");
             this.game.init();
 
+            this.logger.info("Starting game loop");
             while ( this.running )
             {
                 while ( SDL.Event.pollEvent(event) )
@@ -190,7 +199,7 @@ public class SDLApp
 
                 if ( !this.game.handle(event) )
                 {
-                    logSDLError("Error handling event");
+                    this.logSDLError("Error handling event");
                     return 1;
                 }
 
@@ -210,8 +219,8 @@ public class SDLApp
         }
         catch ( Exception e )
         {
-            logSDLError("Exception caught in main loop: " ~ e.msg);
-            writefln("Thrown from %s: %d", e.file, e.line);
+            this.logSDLError("Exception caught in main loop: " ~ e.msg);
+            this.logger.error("Thrown from %s: %d", e.file, e.line);
             return 1;
         }
 
@@ -253,10 +262,10 @@ public class SDLApp
      *      msg = The error message
      */
 
-    private static void logSDLError ( string msg )
+    private void logSDLError ( string msg )
     {
-        writefln("Error: %s", msg);
-        writefln("SDL Error: %s", SDL.error());
-        writefln("SDL Mixer Error: %s", SDL.Mix.getError());
+        this.logger.error("Error: %s", msg);
+        this.logger.error("SDL Error: %s", SDL.error());
+        this.logger.error("SDL Mixer Error: %s", SDL.Mix.getError());
     }
 }
